@@ -18,20 +18,20 @@ using System.Threading.Tasks;
 
 namespace MazeDemonstration
 {
-    class MazeNode
+    public class MazeNode
     {
         public bool North { get; set; }
         public bool East { get; set; }
         public bool South { get; set; }
         public bool West { get; set; }
-        MazeNode()
+        public MazeNode()
         {
             North = false;
             East = false;
             South = false;
             West = false;
         }
-        MazeNode(bool north, bool east, bool south, bool west)
+        public MazeNode(bool north, bool east, bool south, bool west)
         {
             North = north;
             East = east;
