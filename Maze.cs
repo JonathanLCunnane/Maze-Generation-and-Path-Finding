@@ -29,17 +29,44 @@ namespace MazeDemonstration
         }
         MazeNode[,] InitialMaze(int x, int y)
         {
-            // When creating a new maze, we will create a blank square with a border of walls all around it
-            nodes = new MazeNode[x,y];
-            for (int currX = 0; currX < x; currX++)
+            // When creating a new maze, we will create a blank square with a border of walls all around
+            nodes = new MazeNode[x, y];
+            for (int xNode = 0; xNode < x; xNode++)
             {
-                nodes[currX, 0] = new MazeNode(true, false, false, false);
-                nodes[currX, y - 1] = new MazeNode(false, false, true, false);
-            }
-            for (int currY = 0; currY < y; currY++)
-            {
-                nodes[0, currY] = new MazeNode(false, false, false, true);
-                nodes[x - 1, currY] = new MazeNode(false, true, false, false);
+                for (int yNode = 0; yNode < y; yNode++)
+                {
+                    nodes[xNode, yNode] = new MazeNode();
+                    if (xNode == 0)
+                    {
+                        nodes[xNode, yNode].East = true;
+                        nodes[xNode, yNode].West = false;
+                    }
+                    else if (xNode == x - 1)
+                    {
+                        nodes[xNode, yNode].West = true;
+                        nodes[xNode, yNode].East = false;
+                    }
+                    else
+                    {
+                        nodes[xNode, yNode].East = false;
+                        nodes[xNode, yNode].West = false;
+                    }
+                    if (yNode == 0)
+                    {
+                        nodes[xNode, yNode].North = true;
+                        nodes[xNode, yNode].South = false;
+                    }
+                    else if (yNode == y - 1)
+                    {
+                        nodes[xNode, yNode].South = true;
+                        nodes[xNode, yNode].North = false;
+                    }
+                    else
+                    {
+                        nodes[xNode, yNode].South = false;
+                        nodes[xNode, yNode].North = false;
+                    }
+                }
             }
             return nodes;
         }
