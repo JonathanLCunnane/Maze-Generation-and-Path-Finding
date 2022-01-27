@@ -33,6 +33,10 @@ namespace MazeDemonstration
             this.Dimensions = new System.Windows.Forms.ToolStripMenuItem();
             this.GenerateMaze = new System.Windows.Forms.ToolStripMenuItem();
             this.mazePictureBox = new System.Windows.Forms.PictureBox();
+            this.currentSettingsPlaceholder = new System.Windows.Forms.Label();
+            this.dimensionsLabel = new System.Windows.Forms.Label();
+            this.timeIntervalLabel = new System.Windows.Forms.Label();
+            this.TimeInterval = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mazePictureBox)).BeginInit();
             this.SuspendLayout();
@@ -42,10 +46,11 @@ namespace MazeDemonstration
             this.MainMenu.BackColor = System.Drawing.SystemColors.Window;
             this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.Dimensions,
+            this.TimeInterval,
             this.GenerateMaze});
             this.MainMenu.Location = new System.Drawing.Point(0, 0);
             this.MainMenu.Name = "MainMenu";
-            this.MainMenu.Size = new System.Drawing.Size(800, 25);
+            this.MainMenu.Size = new System.Drawing.Size(1206, 25);
             this.MainMenu.TabIndex = 0;
             this.MainMenu.Text = "Main Menu";
             // 
@@ -69,17 +74,59 @@ namespace MazeDemonstration
             // 
             // mazePictureBox
             // 
-            this.mazePictureBox.Location = new System.Drawing.Point(12, 28);
+            this.mazePictureBox.Location = new System.Drawing.Point(12, 53);
             this.mazePictureBox.Name = "mazePictureBox";
-            this.mazePictureBox.Size = new System.Drawing.Size(100, 50);
+            this.mazePictureBox.Size = new System.Drawing.Size(1182, 533);
             this.mazePictureBox.TabIndex = 1;
             this.mazePictureBox.TabStop = false;
+            // 
+            // currentSettingsPlaceholder
+            // 
+            this.currentSettingsPlaceholder.AutoSize = true;
+            this.currentSettingsPlaceholder.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
+            this.currentSettingsPlaceholder.Location = new System.Drawing.Point(12, 34);
+            this.currentSettingsPlaceholder.Name = "currentSettingsPlaceholder";
+            this.currentSettingsPlaceholder.Size = new System.Drawing.Size(107, 16);
+            this.currentSettingsPlaceholder.TabIndex = 2;
+            this.currentSettingsPlaceholder.Text = "Current Settings: ";
+            // 
+            // dimensionsLabel
+            // 
+            this.dimensionsLabel.AutoSize = true;
+            this.dimensionsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
+            this.dimensionsLabel.Location = new System.Drawing.Point(125, 34);
+            this.dimensionsLabel.Name = "dimensionsLabel";
+            this.dimensionsLabel.Size = new System.Drawing.Size(147, 16);
+            this.dimensionsLabel.TabIndex = 3;
+            this.dimensionsLabel.Text = "Dimensions (x, y) - (3, 3)";
+            // 
+            // timeIntervalLabel
+            // 
+            this.timeIntervalLabel.AutoSize = true;
+            this.timeIntervalLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
+            this.timeIntervalLabel.Location = new System.Drawing.Point(278, 34);
+            this.timeIntervalLabel.Name = "timeIntervalLabel";
+            this.timeIntervalLabel.Size = new System.Drawing.Size(193, 16);
+            this.timeIntervalLabel.TabIndex = 4;
+            this.timeIntervalLabel.Text = "Interval Between Steps - 250ms";
+            // 
+            // TimeInterval
+            // 
+            this.TimeInterval.BackColor = System.Drawing.SystemColors.MenuBar;
+            this.TimeInterval.Margin = new System.Windows.Forms.Padding(1);
+            this.TimeInterval.Name = "TimeInterval";
+            this.TimeInterval.Size = new System.Drawing.Size(87, 19);
+            this.TimeInterval.Text = "Time Interval";
+            this.TimeInterval.Click += new System.EventHandler(this.TimeInterval_Click);
             // 
             // MazeGeneratorSolverForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1206, 598);
+            this.Controls.Add(this.timeIntervalLabel);
+            this.Controls.Add(this.dimensionsLabel);
+            this.Controls.Add(this.currentSettingsPlaceholder);
             this.Controls.Add(this.mazePictureBox);
             this.Controls.Add(this.MainMenu);
             this.MainMenuStrip = this.MainMenu;
@@ -99,6 +146,10 @@ namespace MazeDemonstration
         private System.Windows.Forms.ToolStripMenuItem Dimensions;
         private System.Windows.Forms.ToolStripMenuItem GenerateMaze;
         private System.Windows.Forms.PictureBox mazePictureBox;
+        private System.Windows.Forms.Label currentSettingsPlaceholder;
+        private System.Windows.Forms.Label dimensionsLabel;
+        private System.Windows.Forms.Label timeIntervalLabel;
+        private System.Windows.Forms.ToolStripMenuItem TimeInterval;
     }
 }
 

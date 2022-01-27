@@ -38,13 +38,13 @@ namespace MazeDemonstration
                     nodes[xNode, yNode] = new MazeNode();
                     if (xNode == 0)
                     {
-                        nodes[xNode, yNode].East = true;
-                        nodes[xNode, yNode].West = false;
+                        nodes[xNode, yNode].West = true;
+                        nodes[xNode, yNode].East = false;
                     }
                     else if (xNode == x - 1)
                     {
-                        nodes[xNode, yNode].West = true;
-                        nodes[xNode, yNode].East = false;
+                        nodes[xNode, yNode].East = true;
+                        nodes[xNode, yNode].West = false;
                     }
                     else
                     {
