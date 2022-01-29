@@ -74,7 +74,7 @@ namespace MazeDemonstration
             0,
             0});
             this.timeIntervalNumericUpDown.Minimum = new decimal(new int[] {
-            10,
+            1,
             0,
             0,
             0});

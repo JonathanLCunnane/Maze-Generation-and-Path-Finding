@@ -29,14 +29,16 @@ namespace MazeDemonstration
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.MainMenu = new System.Windows.Forms.MenuStrip();
             this.Dimensions = new System.Windows.Forms.ToolStripMenuItem();
+            this.TimeInterval = new System.Windows.Forms.ToolStripMenuItem();
             this.GenerateMaze = new System.Windows.Forms.ToolStripMenuItem();
             this.mazePictureBox = new System.Windows.Forms.PictureBox();
             this.currentSettingsPlaceholder = new System.Windows.Forms.Label();
             this.dimensionsLabel = new System.Windows.Forms.Label();
             this.timeIntervalLabel = new System.Windows.Forms.Label();
-            this.TimeInterval = new System.Windows.Forms.ToolStripMenuItem();
+            this.mazeGenerationStepTimer = new System.Windows.Forms.Timer(this.components);
             this.MainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mazePictureBox)).BeginInit();
             this.SuspendLayout();
@@ -62,6 +64,15 @@ namespace MazeDemonstration
             this.Dimensions.Size = new System.Drawing.Size(81, 19);
             this.Dimensions.Text = "Dimensions";
             this.Dimensions.Click += new System.EventHandler(this.Dimensions_Click);
+            // 
+            // TimeInterval
+            // 
+            this.TimeInterval.BackColor = System.Drawing.SystemColors.MenuBar;
+            this.TimeInterval.Margin = new System.Windows.Forms.Padding(1);
+            this.TimeInterval.Name = "TimeInterval";
+            this.TimeInterval.Size = new System.Drawing.Size(87, 19);
+            this.TimeInterval.Text = "Time Interval";
+            this.TimeInterval.Click += new System.EventHandler(this.TimeInterval_Click);
             // 
             // GenerateMaze
             // 
@@ -104,20 +115,16 @@ namespace MazeDemonstration
             // 
             this.timeIntervalLabel.AutoSize = true;
             this.timeIntervalLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
-            this.timeIntervalLabel.Location = new System.Drawing.Point(278, 34);
+            this.timeIntervalLabel.Location = new System.Drawing.Point(288, 34);
             this.timeIntervalLabel.Name = "timeIntervalLabel";
             this.timeIntervalLabel.Size = new System.Drawing.Size(193, 16);
             this.timeIntervalLabel.TabIndex = 4;
             this.timeIntervalLabel.Text = "Interval Between Steps - 250ms";
             // 
-            // TimeInterval
+            // mazeGenerationStepTimer
             // 
-            this.TimeInterval.BackColor = System.Drawing.SystemColors.MenuBar;
-            this.TimeInterval.Margin = new System.Windows.Forms.Padding(1);
-            this.TimeInterval.Name = "TimeInterval";
-            this.TimeInterval.Size = new System.Drawing.Size(87, 19);
-            this.TimeInterval.Text = "Time Interval";
-            this.TimeInterval.Click += new System.EventHandler(this.TimeInterval_Click);
+            this.mazeGenerationStepTimer.Interval = 250;
+            this.mazeGenerationStepTimer.Tick += new System.EventHandler(this.mazeGenerationStepTimer_Tick);
             // 
             // MazeGeneratorSolverForm
             // 
@@ -150,6 +157,7 @@ namespace MazeDemonstration
         private System.Windows.Forms.Label dimensionsLabel;
         private System.Windows.Forms.Label timeIntervalLabel;
         private System.Windows.Forms.ToolStripMenuItem TimeInterval;
+        private System.Windows.Forms.Timer mazeGenerationStepTimer;
     }
 }
 

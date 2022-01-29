@@ -10,6 +10,6 @@ namespace MazeDemonstration
     {
         public static int pixelsPerDimension = 20;
         public static int pictureBoxPaddingPixels = 20;
-        public static int wallThickness = 6;
+        public static int wallThickness = 2;
     }
 }

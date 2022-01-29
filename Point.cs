@@ -34,6 +34,14 @@ namespace MazeDemonstration
                 y = Y;
             }
         }
-
+        public override bool Equals(object obj)
+        {
+            if (obj == null || this.GetType() != obj.GetType())
+            {
+                return false;
+            }
+            Point point = (Point)obj;
+            return point.x == x & point.y == y;
+        }
     }
 }

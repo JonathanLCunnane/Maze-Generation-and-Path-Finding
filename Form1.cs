@@ -13,16 +13,37 @@ namespace MazeDemonstration
     public partial class MazeGeneratorSolverForm : Form
     {
         Maze maze = new Maze();
+        int timeIntervalBetweenGenerationSteps = 250;
+        int timerTick = 0;
         public MazeGeneratorSolverForm()
         {
             InitializeComponent();
-            Bitmap mazeBitmap = GetMazeBitmap(maze);
+            Bitmap mazeBitmap = maze.GetMazeBitmap();
             DisplayMazeBitmap(maze, mazeBitmap);
         }
 
         private void GenerateMaze_Click(object sender, EventArgs e)
         {
-            maze.
+            // Get Images
+            Point startPoint = new Point(0, 0);
+            mazeGenerationStepTimer.Tag = maze.StepGeneration(startPoint);
+
+            // Initiate Timer
+            mazeGenerationStepTimer.Interval = timeIntervalBetweenGenerationSteps;
+            mazeGenerationStepTimer.Start();
+        }
+
+        private void mazeGenerationStepTimer_Tick(object sender, EventArgs e)
+        {
+            Maze currMaze = ((Maze[])mazeGenerationStepTimer.Tag)[timerTick];
+            Bitmap currBitmap = currMaze.GetMazeBitmap();
+            DisplayMazeBitmap(maze, currBitmap);
+            timerTick++;
+            if (timerTick == ((Maze[])mazeGenerationStepTimer.Tag).Length)
+            {
+                mazeGenerationStepTimer.Stop();
+                timerTick = 0;
+            }
         }
 
         private void Dimensions_Click(object sender, EventArgs e)
@@ -36,7 +57,7 @@ namespace MazeDemonstration
                 dimensionsLabel.Text = "Dimensions (x, y) - (" + dimensionsDialogue.x.ToString() + ", " + dimensionsDialogue.y.ToString() + ")";
                 // Create new blank maze.
                 maze = new Maze(dimensionsDialogue.x, dimensionsDialogue.y);
-                Bitmap mazeBitmap = GetMazeBitmap(maze);
+                Bitmap mazeBitmap = maze.GetMazeBitmap();
                 DisplayMazeBitmap(maze, mazeBitmap);
             }
             // If 'Cancel' was clicked, do nothing
@@ -50,66 +71,12 @@ namespace MazeDemonstration
             if (dialogueResult == DialogResult.OK)
             {
                 timeIntervalLabel.Text = "Interval Between Steps - " + timeIntervalDialogue.timeInterval + "ms";
+                timeIntervalBetweenGenerationSteps = timeIntervalDialogue.timeInterval;
             }
             // If 'Cancel' was clicked, do nothing
         }
 
-        private Bitmap GetMazeBitmap(Maze maze)
-        {
-            Bitmap mazeBitmap = new Bitmap(maze.dimensions[0] * Consts.pixelsPerDimension + Consts.pictureBoxPaddingPixels, maze.dimensions[1] * Consts.pixelsPerDimension + Consts.pictureBoxPaddingPixels);
-            Graphics mazeBitmapGraphics = Graphics.FromImage(mazeBitmap);
-            int rectangleX;
-            int rectangleY;
-            int rectangleWidth;
-            int rectangleHeight;
-            for (int x = 0; x < maze.dimensions[0]; x++)
-            {
-                for (int y = 0; y < maze.dimensions[1]; y++)
-                {
-                    MazeNode currentNode = maze.nodes[x, y];
-                    Console.Write(x);
-                    Console.Write(y);
-                    Console.Write(":  ");
-                    if (currentNode.North)
-                    {
-                        Console.WriteLine("north");
-                        rectangleX = (x * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
-                        rectangleY = (y * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
-                        rectangleWidth = Consts.pixelsPerDimension + Consts.wallThickness;
-                        rectangleHeight = Consts.wallThickness;
-                        mazeBitmapGraphics.FillRectangle(Brushes.Black, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
-                    }
-                    if (currentNode.East)
-                    {
-                        Console.WriteLine("east");
-                        rectangleX = ((x + 1) * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
-                        rectangleY = (y * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
-                        rectangleWidth = Consts.wallThickness;
-                        rectangleHeight = Consts.pixelsPerDimension + Consts.wallThickness;
-                        mazeBitmapGraphics.FillRectangle(Brushes.Black, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
-                    }
-                    if (currentNode.South)
-                    {
-                        Console.WriteLine("south");
-                        rectangleX = (x * Consts.pixelsPerDimension) + (Consts.pictureBoxPaddingPixels / 2);
-                        rectangleY = ((y + 1) * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
-                        rectangleWidth = Consts.pixelsPerDimension;
-                        rectangleHeight = Consts.wallThickness;
-                        mazeBitmapGraphics.FillRectangle(Brushes.Black, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
-                    }
-                    if (currentNode.West)
-                    {
-                        Console.WriteLine("west");
-                        rectangleX = (x * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
-                        rectangleY = (y * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
-                        rectangleWidth = Consts.wallThickness;
-                        rectangleHeight = Consts.pixelsPerDimension + Consts.wallThickness;
-                        mazeBitmapGraphics.FillRectangle(Brushes.Black, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
-                    }
-                }
-            }
-            return mazeBitmap;
-        }
+        
 
         private void DisplayMazeBitmap(Maze maze, Bitmap mazeBitmap)
         {
@@ -117,6 +84,7 @@ namespace MazeDemonstration
             int pictureBoxHeight = maze.dimensions[1] * Consts.pixelsPerDimension + Consts.pictureBoxPaddingPixels;
             mazePictureBox.Size = new Size(pictureBoxWidth, pictureBoxHeight);
             mazePictureBox.Image = mazeBitmap;
+            mazePictureBox.Invalidate();
         }
     }
 }
