@@ -13,16 +13,16 @@ using System.Threading.Tasks;
 
 namespace MazeDemonstration
 {
-    class Point
+    public class Point
     {
         public int x { get; set; }
         public int y { get; set; }
-        Point()
+        public Point()
         {
             x = -1;
             y = -1;
         }
-        Point(int X, int Y)
+        public Point(int X, int Y)
         {
             if (x < 0 | y < 0)
             {

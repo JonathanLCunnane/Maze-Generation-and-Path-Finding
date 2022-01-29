@@ -22,7 +22,7 @@ namespace MazeDemonstration
 
         private void GenerateMaze_Click(object sender, EventArgs e)
         {
-
+            maze.
         }
 
         private void Dimensions_Click(object sender, EventArgs e)
