@@ -13,13 +13,16 @@ namespace MazeDemonstration
     public partial class MazeGeneratorSolverForm : Form
     {
         Maze maze = new Maze();
+        Bitmap mazeBitmap;
         int timeIntervalBetweenGenerationSteps = 250;
         int timerTick = 0;
+        Brush bgColourBrush;
         public MazeGeneratorSolverForm()
         {
             InitializeComponent();
-            Bitmap mazeBitmap = maze.GetMazeBitmap();
+            mazeBitmap = maze.GetMazeBitmap();
             DisplayMazeBitmap(maze, mazeBitmap);
+            bgColourBrush = new SolidBrush(DefaultBackColor);
         }
 
         private void GenerateMaze_Click(object sender, EventArgs e)
@@ -35,12 +38,15 @@ namespace MazeDemonstration
 
         private void mazeGenerationStepTimer_Tick(object sender, EventArgs e)
         {
-            Maze currMaze = ((Maze[])mazeGenerationStepTimer.Tag)[timerTick];
-            Bitmap currBitmap = currMaze.GetMazeBitmap();
-            DisplayMazeBitmap(maze, currBitmap);
+            ((IEnumerator<MazeDelta>)mazeGenerationStepTimer.Tag).MoveNext();
+            MazeDelta currChange = ((IEnumerator<MazeDelta>)mazeGenerationStepTimer.Tag).Current;
+            mazeBitmap = maze.AlterMazeBitmap(mazeBitmap, currChange, bgColourBrush);
+            DisplayMazeBitmap(maze, mazeBitmap);
             timerTick++;
-            if (timerTick == ((Maze[])mazeGenerationStepTimer.Tag).Length)
+            if (timerTick == maze.dimensions[0] * maze.dimensions[0] - 1)
             {
+                ((IEnumerator<MazeDelta>)mazeGenerationStepTimer.Tag).Dispose();
+                mazeGenerationStepTimer.Tag = null;
                 mazeGenerationStepTimer.Stop();
                 timerTick = 0;
             }
@@ -57,7 +63,7 @@ namespace MazeDemonstration
                 dimensionsLabel.Text = "Dimensions (x, y) - (" + dimensionsDialogue.x.ToString() + ", " + dimensionsDialogue.y.ToString() + ")";
                 // Create new blank maze.
                 maze = new Maze(dimensionsDialogue.x, dimensionsDialogue.y);
-                Bitmap mazeBitmap = maze.GetMazeBitmap();
+                mazeBitmap = maze.GetMazeBitmap();
                 DisplayMazeBitmap(maze, mazeBitmap);
             }
             // If 'Cancel' was clicked, do nothing

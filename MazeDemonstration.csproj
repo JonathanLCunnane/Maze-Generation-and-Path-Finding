@@ -60,6 +60,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Maze.cs" />
+    <Compile Include="MazeDelta.cs" />
     <Compile Include="MazeNode.cs" />
     <Compile Include="Point.cs" />
     <Compile Include="Program.cs" />

@@ -47,15 +47,15 @@ namespace MazeDemonstration
             return nodes;
         }
 
-        public Maze[] StepGeneration(Point start)
+        public IEnumerator<MazeDelta> StepGeneration(Point start)
         {
+            // Generate a deep copy of the nodes first, and initialise variables
             Stack<Point> stack = new Stack<Point>();
             List<Point> visited = new List<Point>();
             Random randGen = new Random();
             stack.Push(start);
             int counted = 0;
             Point nextPoint;
-            Maze[] steps = new Maze[dimensions[0] * dimensions[1] - 1];
             while (counted < dimensions[0] * dimensions[1] - 1)
             {
                 // Generate Steps
@@ -114,18 +114,9 @@ namespace MazeDemonstration
                         stack.Push(nextPoint);
                         break;
                 }
-                MazeNode[,] newMazeNodes = new MazeNode[dimensions[0], dimensions[1]];
-                for (int x = 0; x < dimensions[0]; x++)
-                {
-                    for (int y = 0; y < dimensions[1]; y++)
-                    {
-                        newMazeNodes[x, y] = new MazeNode(nodes[x, y].North, nodes[x, y].East, nodes[x, y].South, nodes[x, y].West);
-                    }
-                }
-                steps[counted] = new Maze(dimensions[0], dimensions[1], newMazeNodes);
+                yield return new MazeDelta(currPoint.x, currPoint.y, direction);
                 counted++;
             }
-            return steps;
         }
 
         public Bitmap GetMazeBitmap(Maze maze)
@@ -175,7 +166,6 @@ namespace MazeDemonstration
                     }
                 }
             }
-            mazeBitmapGraphics.Dispose();
             return mazeBitmap;
         }
 
@@ -183,5 +173,79 @@ namespace MazeDemonstration
         {
             return GetMazeBitmap(this);
         }
+
+        public Bitmap AlterMazeBitmap(Bitmap mazeBitmap, MazeDelta mazeDelta, Brush brush)
+        {
+            Graphics mazeBitmapGraphics = Graphics.FromImage(mazeBitmap);
+            int rectangleX;
+            int rectangleY;
+            int rectangleWidth;
+            int rectangleHeight;
+            int x = mazeDelta.x;
+            int y = mazeDelta.y;
+            switch (mazeDelta.directionChanged)
+            {
+                case 0:
+                    rectangleX = (x * Consts.pixelsPerDimension) + (Consts.pictureBoxPaddingPixels / 2) + (Consts.wallThickness / 2);
+                    rectangleY = (y * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
+                    rectangleWidth = Consts.pixelsPerDimension - Consts.wallThickness;
+                    rectangleHeight = Consts.wallThickness;
+                    mazeBitmapGraphics.FillRectangle(brush, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
+                    break;
+                case 1:
+                    rectangleX = ((x + 1) * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
+                    rectangleY = (y * Consts.pixelsPerDimension) + (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
+                    rectangleWidth = Consts.wallThickness;
+                    rectangleHeight = Consts.pixelsPerDimension - Consts.wallThickness;
+                    mazeBitmapGraphics.FillRectangle(brush, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
+                    break;
+                case 2:
+                    rectangleX = (x * Consts.pixelsPerDimension) + (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
+                    rectangleY = ((y + 1) * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
+                    rectangleWidth = Consts.pixelsPerDimension - Consts.wallThickness;
+                    rectangleHeight = Consts.wallThickness;
+                    mazeBitmapGraphics.FillRectangle(brush, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
+                    break;
+                case 3:
+                    rectangleX = (x * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
+                    rectangleY = (y * Consts.pixelsPerDimension) + (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
+                    rectangleWidth = Consts.wallThickness;
+                    rectangleHeight = Consts.pixelsPerDimension - Consts.wallThickness;
+                    mazeBitmapGraphics.FillRectangle(brush, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
+                    break;
+            }
+            return mazeBitmap;
+        }
+        public void ApplyMazeDelta(MazeDelta mazeDelta)
+        {
+            switch (mazeDelta.directionChanged)
+            {
+                case 0:
+                    nodes[mazeDelta.x, mazeDelta.y].North = false;
+                    nodes[mazeDelta.x, mazeDelta.y - 1].South = false;
+                    break;
+                case 1:
+                    nodes[mazeDelta.x, mazeDelta.y].East = false;
+                    nodes[mazeDelta.x + 1, mazeDelta.y].West = false;
+                    break;
+                case 2:
+                    break;
+            }
+        }
+        /*
+        private Maze Copy()
+        {
+            MazeNode[,] copiedNodes = new MazeNode[dimensions[0], dimensions[1]];
+            for (int xNode = 0; xNode < dimensions[0]; xNode++)
+            {
+                for (int yNode = 0; yNode < dimensions[1]; yNode++)
+                {
+                    copiedNodes[xNode, yNode] = new MazeNode(nodes[xNode, yNode].North, nodes[xNode, yNode].East, nodes[xNode, yNode].South, nodes[xNode, yNode].West);
+                }
+            }
+            Maze copiedMaze = new Maze(dimensions[0], dimensions[1], copiedNodes);
+            return copiedMaze;
+        }
+        */
     }
 }

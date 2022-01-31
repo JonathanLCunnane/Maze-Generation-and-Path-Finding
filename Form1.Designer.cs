@@ -97,7 +97,7 @@ namespace MazeDemonstration
             this.currentSettingsPlaceholder.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
             this.currentSettingsPlaceholder.Location = new System.Drawing.Point(12, 34);
             this.currentSettingsPlaceholder.Name = "currentSettingsPlaceholder";
-            this.currentSettingsPlaceholder.Size = new System.Drawing.Size(107, 16);
+            this.currentSettingsPlaceholder.Size = new System.Drawing.Size(106, 16);
             this.currentSettingsPlaceholder.TabIndex = 2;
             this.currentSettingsPlaceholder.Text = "Current Settings: ";
             // 
@@ -107,7 +107,7 @@ namespace MazeDemonstration
             this.dimensionsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
             this.dimensionsLabel.Location = new System.Drawing.Point(125, 34);
             this.dimensionsLabel.Name = "dimensionsLabel";
-            this.dimensionsLabel.Size = new System.Drawing.Size(147, 16);
+            this.dimensionsLabel.Size = new System.Drawing.Size(146, 16);
             this.dimensionsLabel.TabIndex = 3;
             this.dimensionsLabel.Text = "Dimensions (x, y) - (3, 3)";
             // 
@@ -115,9 +115,9 @@ namespace MazeDemonstration
             // 
             this.timeIntervalLabel.AutoSize = true;
             this.timeIntervalLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
-            this.timeIntervalLabel.Location = new System.Drawing.Point(288, 34);
+            this.timeIntervalLabel.Location = new System.Drawing.Point(301, 34);
             this.timeIntervalLabel.Name = "timeIntervalLabel";
-            this.timeIntervalLabel.Size = new System.Drawing.Size(193, 16);
+            this.timeIntervalLabel.Size = new System.Drawing.Size(192, 16);
             this.timeIntervalLabel.TabIndex = 4;
             this.timeIntervalLabel.Text = "Interval Between Steps - 250ms";
             // 
