@@ -87,7 +87,7 @@ namespace MazeDemonstration
             // 
             this.mazePictureBox.Location = new System.Drawing.Point(12, 53);
             this.mazePictureBox.Name = "mazePictureBox";
-            this.mazePictureBox.Size = new System.Drawing.Size(1182, 533);
+            this.mazePictureBox.Size = new System.Drawing.Size(116, 112);
             this.mazePictureBox.TabIndex = 1;
             this.mazePictureBox.TabStop = false;
             // 
@@ -130,6 +130,7 @@ namespace MazeDemonstration
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1206, 598);
             this.Controls.Add(this.timeIntervalLabel);
             this.Controls.Add(this.dimensionsLabel);

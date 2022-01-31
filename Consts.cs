@@ -8,8 +8,8 @@ namespace MazeDemonstration
 {
     public static class Consts
     {
-        public static int pixelsPerDimension = 6;
+        public static int pixelsPerDimension = 20;
         public static int pictureBoxPaddingPixels = 8;
-        public static int wallThickness = 2;
+        public static int wallThickness = 4;
     }
 }
