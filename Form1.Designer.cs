@@ -39,6 +39,7 @@ namespace MazeDemonstration
             this.dimensionsLabel = new System.Windows.Forms.Label();
             this.timeIntervalLabel = new System.Windows.Forms.Label();
             this.mazeGenerationStepTimer = new System.Windows.Forms.Timer(this.components);
+            this.saveCurrentImage = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mazePictureBox)).BeginInit();
             this.SuspendLayout();
@@ -47,6 +48,7 @@ namespace MazeDemonstration
             // 
             this.MainMenu.BackColor = System.Drawing.SystemColors.Window;
             this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveCurrentImage,
             this.Dimensions,
             this.TimeInterval,
             this.GenerateMaze});
@@ -126,6 +128,15 @@ namespace MazeDemonstration
             this.mazeGenerationStepTimer.Interval = 250;
             this.mazeGenerationStepTimer.Tick += new System.EventHandler(this.mazeGenerationStepTimer_Tick);
             // 
+            // saveCurrentImage
+            // 
+            this.saveCurrentImage.BackColor = System.Drawing.SystemColors.Control;
+            this.saveCurrentImage.Margin = new System.Windows.Forms.Padding(1);
+            this.saveCurrentImage.Name = "saveCurrentImage";
+            this.saveCurrentImage.Size = new System.Drawing.Size(110, 19);
+            this.saveCurrentImage.Text = "Save Maze Image";
+            this.saveCurrentImage.Click += new System.EventHandler(this.saveCurrentImage_Click);
+            // 
             // MazeGeneratorSolverForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -159,6 +170,7 @@ namespace MazeDemonstration
         private System.Windows.Forms.Label timeIntervalLabel;
         private System.Windows.Forms.ToolStripMenuItem TimeInterval;
         private System.Windows.Forms.Timer mazeGenerationStepTimer;
+        private System.Windows.Forms.ToolStripMenuItem saveCurrentImage;
     }
 }
 

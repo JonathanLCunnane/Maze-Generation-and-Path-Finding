@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,11 +17,11 @@ namespace MazeDemonstration
         Bitmap mazeBitmap;
         int timeIntervalBetweenGenerationSteps = 250;
         int timerTick = 0;
-        Brush bgColourBrush;
+        Brush bgColourBrush = new SolidBrush(DefaultBackColor);
         public MazeGeneratorSolverForm()
         {
             InitializeComponent();
-            mazeBitmap = maze.GetMazeBitmap();
+            mazeBitmap = maze.GetMazeBitmap(bgColourBrush);
             DisplayMazeBitmap(maze, mazeBitmap);
             bgColourBrush = new SolidBrush(DefaultBackColor);
         }
@@ -63,7 +64,7 @@ namespace MazeDemonstration
                 dimensionsLabel.Text = "Dimensions (x, y) - (" + dimensionsDialogue.x.ToString() + ", " + dimensionsDialogue.y.ToString() + ")";
                 // Create new blank maze.
                 maze = new Maze(dimensionsDialogue.x, dimensionsDialogue.y);
-                mazeBitmap = maze.GetMazeBitmap();
+                mazeBitmap = maze.GetMazeBitmap(bgColourBrush);
                 DisplayMazeBitmap(maze, mazeBitmap);
             }
             // If 'Cancel' was clicked, do nothing
@@ -91,6 +92,32 @@ namespace MazeDemonstration
             mazePictureBox.Size = new Size(pictureBoxWidth, pictureBoxHeight);
             mazePictureBox.Image = mazeBitmap;
             mazePictureBox.Invalidate();
+        }
+
+        private void saveCurrentImage_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialogue = new SaveFileDialog();
+            saveFileDialogue.Filter = "Images|*.png;*.bmp;*.jpg;*.jpeg";
+            DialogResult dialogResult = saveFileDialogue.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+            {
+                string fileEXT = System.IO.Path.GetExtension(saveFileDialogue.FileName);
+                ImageFormat format;
+                switch (fileEXT)
+                {
+                    case ".jpg":
+                    case ".jpeg":
+                        format = ImageFormat.Jpeg;
+                        break;
+                    case ".bmp":
+                        format = ImageFormat.Bmp;
+                        break;
+                    default:
+                        format = ImageFormat.Png;
+                        break;
+                }
+                mazePictureBox.Image.Save(saveFileDialogue.FileName, format);
+            }
         }
     }
 }

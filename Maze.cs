@@ -119,7 +119,7 @@ namespace MazeDemonstration
             }
         }
 
-        public Bitmap GetMazeBitmap(Maze maze)
+        public Bitmap GetMazeBitmap(Maze maze, Brush bgBrush)
         {
             Bitmap mazeBitmap = new Bitmap(maze.dimensions[0] * Consts.pixelsPerDimension + Consts.pictureBoxPaddingPixels, maze.dimensions[1] * Consts.pixelsPerDimension + Consts.pictureBoxPaddingPixels);
             Graphics mazeBitmapGraphics = Graphics.FromImage(mazeBitmap);
@@ -132,46 +132,67 @@ namespace MazeDemonstration
                 for (int y = 0; y < maze.dimensions[1]; y++)
                 {
                     MazeNode currentNode = maze.nodes[x, y];
+                    rectangleX = (x * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
+                    rectangleY = (y * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
+                    rectangleWidth = Consts.pixelsPerDimension + Consts.wallThickness;
+                    rectangleHeight = Consts.wallThickness;
                     if (currentNode.North)
                     {
-                        rectangleX = (x * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
-                        rectangleY = (y * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
-                        rectangleWidth = Consts.pixelsPerDimension + Consts.wallThickness;
-                        rectangleHeight = Consts.wallThickness;
                         mazeBitmapGraphics.FillRectangle(Brushes.Black, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
                     }
+                    else
+                    {
+                        mazeBitmapGraphics.FillRectangle(bgBrush, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
+                    }
+                    rectangleX = ((x + 1) * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
+                    rectangleY = (y * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
+                    rectangleWidth = Consts.wallThickness;
+                    rectangleHeight = Consts.pixelsPerDimension + Consts.wallThickness;
                     if (currentNode.East)
                     {
-                        rectangleX = ((x + 1) * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
-                        rectangleY = (y * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
-                        rectangleWidth = Consts.wallThickness;
-                        rectangleHeight = Consts.pixelsPerDimension + Consts.wallThickness;
                         mazeBitmapGraphics.FillRectangle(Brushes.Black, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
                     }
+                    else
+                    {
+                        mazeBitmapGraphics.FillRectangle(bgBrush, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
+                    }
+                    rectangleX = (x * Consts.pixelsPerDimension) + (Consts.pictureBoxPaddingPixels / 2);
+                    rectangleY = ((y + 1) * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
+                    rectangleWidth = Consts.pixelsPerDimension;
+                    rectangleHeight = Consts.wallThickness;
                     if (currentNode.South)
                     {
-                        rectangleX = (x * Consts.pixelsPerDimension) + (Consts.pictureBoxPaddingPixels / 2);
-                        rectangleY = ((y + 1) * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
-                        rectangleWidth = Consts.pixelsPerDimension;
-                        rectangleHeight = Consts.wallThickness;
                         mazeBitmapGraphics.FillRectangle(Brushes.Black, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
                     }
+                    else
+                    {
+                        mazeBitmapGraphics.FillRectangle(bgBrush, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
+                    }
+                    rectangleX = (x * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
+                    rectangleY = (y * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
+                    rectangleWidth = Consts.wallThickness;
+                    rectangleHeight = Consts.pixelsPerDimension + Consts.wallThickness;
                     if (currentNode.West)
                     {
-                        rectangleX = (x * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
-                        rectangleY = (y * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
-                        rectangleWidth = Consts.wallThickness;
-                        rectangleHeight = Consts.pixelsPerDimension + Consts.wallThickness;
                         mazeBitmapGraphics.FillRectangle(Brushes.Black, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
                     }
+                    else
+                    {
+                        mazeBitmapGraphics.FillRectangle(bgBrush, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
+                    }
+                    rectangleX = (x * Consts.pixelsPerDimension) + (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
+                    rectangleY = (y * Consts.pixelsPerDimension) + (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
+                    rectangleWidth = Consts.pixelsPerDimension - Consts.wallThickness;
+                    rectangleHeight = Consts.pixelsPerDimension - Consts.wallThickness;
+                    mazeBitmapGraphics.FillRectangle(bgBrush, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
                 }
             }
             return mazeBitmap;
         }
 
-        public Bitmap GetMazeBitmap()
+        public Bitmap GetMazeBitmap(Brush bgBrush)
         {
-            return GetMazeBitmap(this);
+            return GetMazeBitmap(this, bgBrush);
         }
 
         public Bitmap AlterMazeBitmap(Bitmap mazeBitmap, MazeDelta mazeDelta, Brush brush)
