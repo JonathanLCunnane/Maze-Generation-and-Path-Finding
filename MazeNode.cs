@@ -17,15 +17,18 @@ namespace MazeDemonstration
     {
         public bool North { get; set; }
         public bool West { get; set; }
+        public bool Visited { get; set; }
         public MazeNode()
         {
             North = false;
             West = false;
+            Visited = false;
         }
         public MazeNode(bool north, bool west)
         {
             North = north;
             West = west;
+            Visited = false;
         }
     }
 }

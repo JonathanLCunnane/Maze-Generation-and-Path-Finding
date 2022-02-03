@@ -24,13 +24,15 @@ namespace MazeDemonstration
         {
             get
             {
-                    return (int)yDimension.Value;
+                return (int)yDimension.Value;
             }
         }
 
-        public DimensionsDialogue()
+        public DimensionsDialogue(int x, int y)
         {
             InitializeComponent();
+            yDimension.Value = y;
+            xDimension.Value = x;
         }
     }
 }

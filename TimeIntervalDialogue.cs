@@ -19,9 +19,10 @@ namespace MazeDemonstration
                 return (int)timeIntervalNumericUpDown.Value;
             }
         }
-        public TimeIntervalDialogue()
+        public TimeIntervalDialogue(int interval)
         {
             InitializeComponent();
+            timeIntervalNumericUpDown.Value = interval;
         }
     }
 }

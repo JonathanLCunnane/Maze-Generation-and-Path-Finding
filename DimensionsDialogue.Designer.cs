@@ -71,7 +71,7 @@ namespace MazeDemonstration
             // 
             this.xDimension.Location = new System.Drawing.Point(100, 12);
             this.xDimension.Maximum = new decimal(new int[] {
-            1024,
+            2048,
             0,
             0,
             0});
@@ -93,7 +93,7 @@ namespace MazeDemonstration
             // 
             this.yDimension.Location = new System.Drawing.Point(100, 47);
             this.yDimension.Maximum = new decimal(new int[] {
-            1024,
+            2048,
             0,
             0,
             0});

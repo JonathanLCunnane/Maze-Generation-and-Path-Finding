@@ -54,7 +54,7 @@ namespace MazeDemonstration
                 // Generate and Display Maze
                 Point startPoint = new Point(0, 0);
                 maze.GenerateUnstepped(startPoint);
-                Bitmap mazeBitmap = maze.GetMazeBitmap(new SolidBrush(Color.Red));
+                Bitmap mazeBitmap = maze.GetMazeBitmap(bgColourBrush);
                 DisplayMazeBitmap(maze, mazeBitmap);
             }
         }

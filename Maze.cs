@@ -47,39 +47,59 @@ namespace MazeDemonstration
             return nodes;
         }
 
-        public IEnumerator<MazeDelta> StepGeneration(Point start)
+        public void GenerateUnstepped(Point start)
         {
-            // Generate a deep copy of the nodes first, and initialise variables
+            // Initialise variables
             Stack<Point> stack = new Stack<Point>();
-            List<Point> visited = new List<Point>();
             Random randGen = new Random();
             stack.Push(start);
             int counted = 0;
             Point nextPoint;
-            yield return new MazeDelta(0, 0, 0);
-            /*
             while (counted < dimensions[0] * dimensions[1] - 1)
             {
                 // Generate Steps
                 Point currPoint = stack.Peek();
-                visited.Add(currPoint);
-                MazeNode currNode = nodes[currPoint.x, currPoint.y];
+                nodes[currPoint.x, currPoint.y].Visited = true;
                 List<int> cardinalDirections = new List<int>(); // {NORTH = 0, EAST = 1, SOUTH = 2, WEST = 3}
-                if (currNode.North & currPoint.y != 0 & visited.Contains(new Point(currPoint.x, currPoint.y - 1)) != true)
+                if (nodes[currPoint.x, currPoint.y].North)
                 {
-                    cardinalDirections.Add(0);
+                    if (currPoint.y != 0)
+                    {
+                        if (!nodes[currPoint.x, currPoint.y - 1].Visited)
+                        {
+                            cardinalDirections.Add(0);
+                        }
+                    }
                 }
-                if (currNode.East & currPoint.x != (dimensions[0] - 1) & visited.Contains(new Point(currPoint.x + 1, currPoint.y)) != true)
+                if (currPoint.x != (dimensions[0] - 1))
                 {
-                    cardinalDirections.Add(1);
+                    if (nodes[currPoint.x + 1, currPoint.y].West)
+                    {
+                        if (!nodes[currPoint.x + 1, currPoint.y].Visited)
+                        {
+                            cardinalDirections.Add(1);
+                        }
+                    }
                 }
-                if (currNode.South & currPoint.y != (dimensions[1] - 1) & visited.Contains(new Point(currPoint.x, currPoint.y + 1)) != true)
+                if (currPoint.y != (dimensions[1] - 1))
                 {
-                    cardinalDirections.Add(2);
+                    if (nodes[currPoint.x, currPoint.y + 1].North)
+                    {
+                        if (!nodes[currPoint.x, currPoint.y + 1].Visited)
+                        {
+                            cardinalDirections.Add(2);
+                        }
+                    }
                 }
-                if (currNode.West & currPoint.x != 0 & visited.Contains(new Point(currPoint.x - 1, currPoint.y)) != true)
+                if (nodes[currPoint.x, currPoint.y].West)
                 {
-                    cardinalDirections.Add(3);
+                    if (currPoint.x != 0)
+                    {
+                        if (!nodes[currPoint.x - 1, currPoint.y].Visited)
+                        {
+                            cardinalDirections.Add(3);
+                        }
+                    }
                 }
                 if (cardinalDirections.Count == 0)
                 {
@@ -87,44 +107,128 @@ namespace MazeDemonstration
                     continue;
                 }
                 // Beginning the random selection of a direction and blocking off the other directions apart from the walls with 
-                int directionIndex = randGen.Next(0, cardinalDirections.Count);
-                int direction = cardinalDirections[directionIndex];
+                int direction = cardinalDirections[randGen.Next(0, cardinalDirections.Count)];
                 switch (direction)
                 {
-                    case 0: // Going North -> Remove North wall of currNode and South wall of next node
-                        currNode.North = false;
-                        nodes[currPoint.x, currPoint.y - 1].South = false;
+                    case 0: // Going North -> Remove North wall of current node
+                        nodes[currPoint.x, currPoint.y].North = false;
                         nextPoint = new Point(currPoint.x, currPoint.y - 1);
                         stack.Push(nextPoint);
                         break;
-                    case 1: // Going East -> Remove East wall of currNode and West wall of next node
-                        currNode.East = false;
+                    case 1: // Going East -> Remove West wall of node to the right
                         nodes[currPoint.x + 1, currPoint.y].West = false;
                         nextPoint = new Point(currPoint.x + 1, currPoint.y);
                         stack.Push(nextPoint);
                         break;
-                    case 2: // Going South -> Remove South wall of currNode and North wall of next node
-                        currNode.South = false;
+                    case 2: // Going South -> Remove Noth wall of node below
                         nodes[currPoint.x, currPoint.y + 1].North = false;
                         nextPoint = new Point(currPoint.x, currPoint.y + 1);
                         stack.Push(nextPoint);
                         break;
-                    case 3: // Going West -> Remove West wall of currNode and East wall of next node
-                        currNode.West = false;
-                        nodes[currPoint.x - 1, currPoint.y].East = false;
+                    case 3: // Going West -> Remove West wall of current node
+                        nodes[currPoint.x, currPoint.y].West = false;
+                        nextPoint = new Point(currPoint.x - 1, currPoint.y);
+                        stack.Push(nextPoint);
+                        break;
+                }
+                counted++;
+            }
+        }
+
+        public IEnumerator<MazeDelta> StepGeneration(Point start)
+        {
+            // Initialise variables
+            Stack<Point> stack = new Stack<Point>();
+            Random randGen = new Random();
+            stack.Push(start);
+            int counted = 0;
+            Point nextPoint;
+            while (counted < dimensions[0] * dimensions[1] - 1)
+            {
+                // Generate Steps
+                Point currPoint = stack.Peek();
+                nodes[currPoint.x, currPoint.y].Visited = true;
+                List<int> cardinalDirections = new List<int>(); // {NORTH = 0, EAST = 1, SOUTH = 2, WEST = 3}
+                if (nodes[currPoint.x, currPoint.y].North)
+                {
+                    if (currPoint.y != 0)
+                    {
+                        if (!nodes[currPoint.x, currPoint.y - 1].Visited)
+                        {
+                            cardinalDirections.Add(0);
+                        }
+                    }
+                }
+                if (currPoint.x != (dimensions[0] - 1))
+                {
+                    if (nodes[currPoint.x + 1, currPoint.y].West)
+                    {
+                        if (!nodes[currPoint.x + 1, currPoint.y].Visited)
+                        {
+                            cardinalDirections.Add(1);
+                        }
+                    }
+                }
+                if (currPoint.y != (dimensions[1] - 1))
+                {
+                    if (nodes[currPoint.x, currPoint.y + 1].North)
+                    {
+                        if (!nodes[currPoint.x, currPoint.y + 1].Visited)
+                        {
+                            cardinalDirections.Add(2);
+                        }
+                    }
+                }
+                if (nodes[currPoint.x, currPoint.y].West)
+                {
+                    if (currPoint.x != 0)
+                    {
+                        if (!nodes[currPoint.x - 1, currPoint.y].Visited)
+                        {
+                            cardinalDirections.Add(3);
+                        }
+                    }
+                }
+                if (cardinalDirections.Count == 0)
+                {
+                    stack.Pop();
+                    continue;
+                }
+                // Beginning the random selection of a direction and blocking off the other directions apart from the walls with 
+                int direction = cardinalDirections[randGen.Next(0, cardinalDirections.Count)];
+                switch (direction)
+                {
+                    case 0: // Going North -> Remove North wall of current node
+                        nodes[currPoint.x, currPoint.y].North = false;
+                        nextPoint = new Point(currPoint.x, currPoint.y - 1);
+                        stack.Push(nextPoint);
+                        break;
+                    case 1: // Going East -> Remove West wall of node to the right
+                        nodes[currPoint.x + 1, currPoint.y].West = false;
+                        nextPoint = new Point(currPoint.x + 1, currPoint.y);
+                        stack.Push(nextPoint);
+                        break;
+                    case 2: // Going South -> Remove Noth wall of node below
+                        nodes[currPoint.x, currPoint.y + 1].North = false;
+                        nextPoint = new Point(currPoint.x, currPoint.y + 1);
+                        stack.Push(nextPoint);
+                        break;
+                    case 3: // Going West -> Remove West wall of current node
+                        nodes[currPoint.x, currPoint.y].West = false;
                         nextPoint = new Point(currPoint.x - 1, currPoint.y);
                         stack.Push(nextPoint);
                         break;
                 }
                 yield return new MazeDelta(currPoint.x, currPoint.y, direction);
                 counted++;
-            }*/
+            }
         }
 
         public static Bitmap GetMazeBitmap(Maze maze, Brush bgBrush)
         {
             Bitmap mazeBitmap = new Bitmap(maze.dimensions[0] * Consts.pixelsPerDimension + Consts.pictureBoxPaddingPixels, maze.dimensions[1] * Consts.pixelsPerDimension + Consts.pictureBoxPaddingPixels);
             Graphics mazeBitmapGraphics = Graphics.FromImage(mazeBitmap);
+            mazeBitmapGraphics.FillRectangle(bgBrush, 0, 0, mazeBitmap.Width, mazeBitmap.Height);
             int rectangleX;
             int rectangleY;
             int rectangleWidth;
@@ -142,34 +246,24 @@ namespace MazeDemonstration
                     {
                         mazeBitmapGraphics.FillRectangle(Brushes.Black, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
                     }
-                    else
-                    {
-                        mazeBitmapGraphics.FillRectangle(bgBrush, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
-                    }
-                    rectangleX = (x * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
-                    rectangleY = (y * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
-                    rectangleWidth = Consts.wallThickness;
-                    rectangleHeight = Consts.pixelsPerDimension + Consts.wallThickness;
                     if (currentNode.West)
                     {
-                        mazeBitmapGraphics.FillRectangle(Brushes.Black, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
+                        mazeBitmapGraphics.FillRectangle(Brushes.Black, rectangleX, rectangleY, rectangleHeight, rectangleWidth);
                     }
-                    else
-                    {
-                        mazeBitmapGraphics.FillRectangle(bgBrush, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
-                    }
-                    rectangleX = (x * Consts.pixelsPerDimension) + (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
-                    rectangleY = (y * Consts.pixelsPerDimension) + (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
-                    rectangleWidth = Consts.pixelsPerDimension - Consts.wallThickness;
-                    rectangleHeight = Consts.pixelsPerDimension - Consts.wallThickness;
-                    mazeBitmapGraphics.FillRectangle(bgBrush, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
                 }
             }
-            rectangleX = ((maze.dimensions[0] + 1) * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2) + 100;
-            rectangleY = Consts.pixelsPerDimension - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
+            // West Wall
+            rectangleX = ((maze.dimensions[0]) * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
+            rectangleY = (Consts.pictureBoxPaddingPixels / 2) - (Consts.wallThickness / 2);
             rectangleWidth = Consts.wallThickness;
-            rectangleHeight = (Consts.pixelsPerDimension * maze.dimensions[0]) + Consts.wallThickness;
-            mazeBitmapGraphics.FillRectangle(Brushes.Red, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
+            rectangleHeight = (Consts.pixelsPerDimension * maze.dimensions[1]) + Consts.wallThickness;
+            mazeBitmapGraphics.FillRectangle(Brushes.Black, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
+            // South Wall
+            rectangleX = (Consts.pictureBoxPaddingPixels / 2) - (Consts.wallThickness / 2);
+            rectangleY = ((maze.dimensions[1]) * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
+            rectangleWidth = (Consts.pixelsPerDimension * maze.dimensions[0]) + Consts.wallThickness;
+            rectangleHeight = Consts.wallThickness;
+            mazeBitmapGraphics.FillRectangle(Brushes.Black, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
             return mazeBitmap;
         }
 
@@ -222,20 +316,21 @@ namespace MazeDemonstration
         }
         public void ApplyMazeDelta(MazeDelta mazeDelta)
         {
-            /*
             switch (mazeDelta.directionChanged)
             {
                 case 0:
                     nodes[mazeDelta.x, mazeDelta.y].North = false;
-                    nodes[mazeDelta.x, mazeDelta.y - 1].South = false;
                     break;
                 case 1:
-                    nodes[mazeDelta.x, mazeDelta.y].East = false;
                     nodes[mazeDelta.x + 1, mazeDelta.y].West = false;
                     break;
                 case 2:
+                    nodes[mazeDelta.x, mazeDelta.y + 1].North = false;
                     break;
-            }*/
+                case 3:
+                    nodes[mazeDelta.x, mazeDelta.y].West = false;
+                    break;
+            }
         }
         /*
         private Maze Copy()
