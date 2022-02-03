@@ -7,6 +7,7 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace MazeDemonstration
@@ -18,6 +19,11 @@ namespace MazeDemonstration
         int timeIntervalBetweenGenerationSteps = 250;
         int timerTick = 0;
         Brush bgColourBrush = new SolidBrush(DefaultBackColor);
+        Stopwatch sw = Stopwatch.StartNew();
+        long moveNext = 0;
+        long current = 0;
+        long alterMazeBitmap = 0;
+        long displayBitmap = 0;
         public MazeGeneratorSolverForm()
         {
             InitializeComponent();
@@ -39,13 +45,29 @@ namespace MazeDemonstration
 
         private void mazeGenerationStepTimer_Tick(object sender, EventArgs e)
         {
+            sw.Restart();
             ((IEnumerator<MazeDelta>)mazeGenerationStepTimer.Tag).MoveNext();
+            sw.Stop();
+            moveNext += sw.ElapsedTicks;
+            sw.Restart();
             MazeDelta currChange = ((IEnumerator<MazeDelta>)mazeGenerationStepTimer.Tag).Current;
+            sw.Stop();
+            current += sw.ElapsedTicks;
+            sw.Restart();
             mazeBitmap = maze.AlterMazeBitmap(mazeBitmap, currChange, bgColourBrush);
+            sw.Stop();
+            alterMazeBitmap += sw.ElapsedTicks;
+            sw.Restart();
             DisplayMazeBitmap(maze, mazeBitmap);
+            sw.Stop();
+            displayBitmap += sw.ElapsedTicks;
             timerTick++;
             if (timerTick == maze.dimensions[0] * maze.dimensions[0] - 1)
             {
+                Console.WriteLine($"Move Next: {moveNext/(timerTick+1)} ticks");
+                Console.WriteLine($"Current: {current / (timerTick + 1)} ticks");
+                Console.WriteLine($"Alter Maze Bitmap: {alterMazeBitmap / (timerTick + 1)} ticks");
+                Console.WriteLine($"Display Bitmap: {displayBitmap / (timerTick + 1)} ticks");
                 ((IEnumerator<MazeDelta>)mazeGenerationStepTimer.Tag).Dispose();
                 mazeGenerationStepTimer.Tag = null;
                 mazeGenerationStepTimer.Stop();

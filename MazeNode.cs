@@ -6,14 +6,9 @@ using System.Threading.Tasks;
 
 /// <summary>
 /// Each Maze Node will have a simple structure:
-/// Each of the Cardinal Directions will be used to represent if there is a wall in that direction
+/// Half of the Cardinal Directions will be used to represent if there is a wall in that direction
 /// True - Wall is in that direction
-/// False - Wall is not in that direction (i.e. Path is in that direction)
-/// e.g. North = True, East = False, South = True, West = True
-/// this will, when displayed, look like a C shape:
-///  _
-/// |
-///  ‾
+/// False - Wall is not in that direction (i.e. Path is in that direction)‾
 /// </summary>
 
 namespace MazeDemonstration
@@ -21,21 +16,15 @@ namespace MazeDemonstration
     public class MazeNode
     {
         public bool North { get; set; }
-        public bool East { get; set; }
-        public bool South { get; set; }
         public bool West { get; set; }
         public MazeNode()
         {
             North = false;
-            East = false;
-            South = false;
             West = false;
         }
-        public MazeNode(bool north, bool east, bool south, bool west)
+        public MazeNode(bool north, bool west)
         {
             North = north;
-            East = east;
-            South = south;
             West = west;
         }
     }
