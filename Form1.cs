@@ -16,17 +16,16 @@ namespace MazeDemonstration
     {
         Maze maze = new Maze();
         Bitmap mazeBitmap;
-        int timeIntervalBetweenGenerationSteps = 250;
+        int timeIntervalBetweenGenerationSteps = 25;
         int timerTick = 0;
         Brush bgColourBrush = new SolidBrush(DefaultBackColor);
-        Stopwatch sw = Stopwatch.StartNew();
-        long moveNext = 0;
-        long current = 0;
-        long alterMazeBitmap = 0;
-        long displayBitmap = 0;
         public MazeGeneratorSolverForm()
         {
             InitializeComponent();
+            // Set Default Tags
+            dimensionsLabel.Tag = new Point(3, 3);
+            timeIntervalLabel.Tag = 25;
+            // Get Default Maze
             mazeBitmap = maze.GetMazeBitmap(bgColourBrush);
             DisplayMazeBitmap(maze, mazeBitmap);
             bgColourBrush = new SolidBrush(DefaultBackColor);
@@ -34,40 +33,41 @@ namespace MazeDemonstration
 
         private void GenerateMaze_Click(object sender, EventArgs e)
         {
-            // Get Images
-            Point startPoint = new Point(0, 0);
-            mazeGenerationStepTimer.Tag = maze.StepGeneration(startPoint);
+            // Disable and Enable Components. Also, start showing the progress bar.
+            instantCheckBox.Enabled = false;
+            Dimensions.Enabled = false;
+            TimeInterval.Enabled = false;
+            GenerateMaze.Enabled = false;
+            ResetMaze.Enabled = true;
+            if (!instantCheckBox.Checked)
+            {
+                // Start Generation
+                Point startPoint = new Point(0, 0);
+                mazeGenerationStepTimer.Tag = maze.StepGeneration(startPoint);
 
-            // Initiate Timer
-            mazeGenerationStepTimer.Interval = timeIntervalBetweenGenerationSteps;
-            mazeGenerationStepTimer.Start();
+                // Initiate Timer
+                mazeGenerationStepTimer.Interval = timeIntervalBetweenGenerationSteps;
+                mazeGenerationStepTimer.Start();
+            }
+            else
+            {
+                // Generate and Display Maze
+                Point startPoint = new Point(0, 0);
+                maze.GenerateUnstepped(startPoint);
+                Bitmap mazeBitmap = maze.GetMazeBitmap(new SolidBrush(Color.Red));
+                DisplayMazeBitmap(maze, mazeBitmap);
+            }
         }
 
         private void mazeGenerationStepTimer_Tick(object sender, EventArgs e)
         {
-            sw.Restart();
             ((IEnumerator<MazeDelta>)mazeGenerationStepTimer.Tag).MoveNext();
-            sw.Stop();
-            moveNext += sw.ElapsedTicks;
-            sw.Restart();
             MazeDelta currChange = ((IEnumerator<MazeDelta>)mazeGenerationStepTimer.Tag).Current;
-            sw.Stop();
-            current += sw.ElapsedTicks;
-            sw.Restart();
             mazeBitmap = maze.AlterMazeBitmap(mazeBitmap, currChange, bgColourBrush);
-            sw.Stop();
-            alterMazeBitmap += sw.ElapsedTicks;
-            sw.Restart();
             DisplayMazeBitmap(maze, mazeBitmap);
-            sw.Stop();
-            displayBitmap += sw.ElapsedTicks;
             timerTick++;
             if (timerTick == maze.dimensions[0] * maze.dimensions[0] - 1)
             {
-                Console.WriteLine($"Move Next: {moveNext/(timerTick+1)} ticks");
-                Console.WriteLine($"Current: {current / (timerTick + 1)} ticks");
-                Console.WriteLine($"Alter Maze Bitmap: {alterMazeBitmap / (timerTick + 1)} ticks");
-                Console.WriteLine($"Display Bitmap: {displayBitmap / (timerTick + 1)} ticks");
                 ((IEnumerator<MazeDelta>)mazeGenerationStepTimer.Tag).Dispose();
                 mazeGenerationStepTimer.Tag = null;
                 mazeGenerationStepTimer.Stop();
@@ -77,13 +77,14 @@ namespace MazeDemonstration
 
         private void Dimensions_Click(object sender, EventArgs e)
         {
-            DimensionsDialogue dimensionsDialogue = new DimensionsDialogue();
+            DimensionsDialogue dimensionsDialogue = new DimensionsDialogue(((Point)dimensionsLabel.Tag).x, ((Point)dimensionsLabel.Tag).y);
             DialogResult dialogueResult = dimensionsDialogue.ShowDialog();
             // If 'Set Dimensions' was clicked, then set the dimensions.
             if (dialogueResult == DialogResult.OK)
             {
                 // Change dimensions label.
-                dimensionsLabel.Text = "Dimensions (x, y) - (" + dimensionsDialogue.x.ToString() + ", " + dimensionsDialogue.y.ToString() + ")";
+                dimensionsLabel.Text = $"Dimensions - ({dimensionsDialogue.x}, {dimensionsDialogue.y})";
+                dimensionsLabel.Tag = new Point(dimensionsDialogue.x, dimensionsDialogue.y);
                 // Create new blank maze.
                 maze = new Maze(dimensionsDialogue.x, dimensionsDialogue.y);
                 mazeBitmap = maze.GetMazeBitmap(bgColourBrush);
@@ -94,18 +95,29 @@ namespace MazeDemonstration
 
         private void TimeInterval_Click(object sender, EventArgs e)
         {
-            TimeIntervalDialogue timeIntervalDialogue = new TimeIntervalDialogue();
+            TimeIntervalDialogue timeIntervalDialogue = new TimeIntervalDialogue((int)timeIntervalLabel.Tag);
             DialogResult dialogueResult = timeIntervalDialogue.ShowDialog();
             // If 'Set Time Interval' was clicked, set the time interval to whatever was on the track bar.
             if (dialogueResult == DialogResult.OK)
             {
-                timeIntervalLabel.Text = "Interval Between Steps - " + timeIntervalDialogue.timeInterval + "ms";
+                timeIntervalLabel.Tag = timeIntervalDialogue.timeInterval;
+                timeIntervalLabel.Text = $"Interval Between Steps - {timeIntervalDialogue.timeInterval}ms";
                 timeIntervalBetweenGenerationSteps = timeIntervalDialogue.timeInterval;
             }
             // If 'Cancel' was clicked, do nothing
         }
 
-        
+        private void instantCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (instantCheckBox.Checked)
+            {
+                TimeInterval.Available = false;
+                timeIntervalLabel.Text = $"Interval Between Steps - None";
+                return;
+            }
+            TimeInterval.Available = true;
+            timeIntervalLabel.Text = $"Interval Between Steps - {(int)timeIntervalLabel.Tag}ms";
+        }
 
         private void DisplayMazeBitmap(Maze maze, Bitmap mazeBitmap)
         {
@@ -140,6 +152,23 @@ namespace MazeDemonstration
                 }
                 mazePictureBox.Image.Save(saveFileDialogue.FileName, format);
             }
+        }
+
+        private void resetMazeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (mazeGenerationStepTimer.Enabled)
+            {
+                mazeGenerationStepTimer.Stop();
+                timerTick = 0;
+            }
+            maze = new Maze(maze.dimensions[0], maze.dimensions[1]);
+            mazeBitmap = maze.GetMazeBitmap(bgColourBrush);
+            DisplayMazeBitmap(maze, mazeBitmap);
+            ResetMaze.Enabled = false;
+            instantCheckBox.Enabled = true;
+            Dimensions.Enabled = true;
+            TimeInterval.Enabled = true;
+            GenerateMaze.Enabled = true;
         }
     }
 }
