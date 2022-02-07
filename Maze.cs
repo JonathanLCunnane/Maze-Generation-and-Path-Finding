@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Drawing;
-
+using System.Xml.Serialization;
+using System.ComponentModel;
 
 /// <summary>
 /// 
@@ -17,7 +18,35 @@ namespace MazeDemonstration
     {
         // Maze Initialisation
         public int[] dimensions { get; }
+        [XmlIgnore]
         public MazeNode[,] nodes { get; set; }
+
+        [XmlElement("nodes"), Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
+        public MazeNode[] nodesFlatten
+        {
+            get
+            {
+                MazeNode[] flattenedNodes = new MazeNode[dimensions[0]*dimensions[1]];
+                int count = 0;
+                foreach (MazeNode node in nodes)
+                {
+                    flattenedNodes[count] = node;
+                    count++;
+                }
+                return flattenedNodes;
+            }
+            set
+            {
+                MazeNode[,] nodes = new MazeNode[dimensions[0], dimensions[1]];
+                for(int x = 0; x < dimensions[0]; x++)
+                {
+                    for(int y = 0; y < dimensions[1]; y++)
+                    {
+                        nodes[x, y] = value[y * dimensions[0] + x];
+                    }
+                }
+            }
+        }
         public Maze()
         {
             dimensions = new int[2] { 3, 3 };
@@ -28,11 +57,13 @@ namespace MazeDemonstration
             dimensions = new int[2] { x, y };
             nodes = InitialMaze(x, y);
         }
-        Maze(int x, int y, MazeNode[,] _nodes)
+        public Maze(int x, int y, MazeNode[,] _nodes)
         {
             dimensions = new int[2] { x, y };
             nodes = _nodes;
         }
+
+
         MazeNode[,] InitialMaze(int x, int y)
         {
             // When creating a new maze, we will create a blank square with a border of walls all around

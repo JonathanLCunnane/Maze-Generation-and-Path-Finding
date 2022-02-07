@@ -31,17 +31,20 @@ namespace MazeDemonstration
         {
             this.components = new System.ComponentModel.Container();
             this.MainMenu = new System.Windows.Forms.MenuStrip();
-            this.saveCurrentImage = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveMaze = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveMazeAsCurrentImage = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveMazeAsMazeFile = new System.Windows.Forms.ToolStripMenuItem();
             this.Dimensions = new System.Windows.Forms.ToolStripMenuItem();
             this.TimeInterval = new System.Windows.Forms.ToolStripMenuItem();
             this.GenerateMaze = new System.Windows.Forms.ToolStripMenuItem();
+            this.ResetMaze = new System.Windows.Forms.ToolStripMenuItem();
             this.mazePictureBox = new System.Windows.Forms.PictureBox();
             this.currentSettingsPlaceholder = new System.Windows.Forms.Label();
             this.dimensionsLabel = new System.Windows.Forms.Label();
             this.timeIntervalLabel = new System.Windows.Forms.Label();
             this.mazeGenerationStepTimer = new System.Windows.Forms.Timer(this.components);
             this.instantCheckBox = new System.Windows.Forms.CheckBox();
-            this.ResetMaze = new System.Windows.Forms.ToolStripMenuItem();
+            this.openMazeFile = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mazePictureBox)).BeginInit();
             this.SuspendLayout();
@@ -50,7 +53,8 @@ namespace MazeDemonstration
             // 
             this.MainMenu.BackColor = System.Drawing.SystemColors.Window;
             this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.saveCurrentImage,
+            this.openMazeFile,
+            this.saveMaze,
             this.Dimensions,
             this.TimeInterval,
             this.GenerateMaze,
@@ -61,14 +65,30 @@ namespace MazeDemonstration
             this.MainMenu.TabIndex = 0;
             this.MainMenu.Text = "Main Menu";
             // 
-            // saveCurrentImage
+            // saveMaze
             // 
-            this.saveCurrentImage.BackColor = System.Drawing.SystemColors.Control;
-            this.saveCurrentImage.Margin = new System.Windows.Forms.Padding(1);
-            this.saveCurrentImage.Name = "saveCurrentImage";
-            this.saveCurrentImage.Size = new System.Drawing.Size(110, 19);
-            this.saveCurrentImage.Text = "Save Maze Image";
-            this.saveCurrentImage.Click += new System.EventHandler(this.saveCurrentImage_Click);
+            this.saveMaze.BackColor = System.Drawing.SystemColors.Control;
+            this.saveMaze.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.saveMazeAsCurrentImage,
+            this.saveMazeAsMazeFile});
+            this.saveMaze.Margin = new System.Windows.Forms.Padding(1);
+            this.saveMaze.Name = "saveMaze";
+            this.saveMaze.Size = new System.Drawing.Size(110, 19);
+            this.saveMaze.Text = "Save Maze Image";
+            // 
+            // saveMazeAsCurrentImage
+            // 
+            this.saveMazeAsCurrentImage.Name = "saveMazeAsCurrentImage";
+            this.saveMazeAsCurrentImage.Size = new System.Drawing.Size(180, 22);
+            this.saveMazeAsCurrentImage.Text = "As Image";
+            this.saveMazeAsCurrentImage.Click += new System.EventHandler(this.saveMazeAsCurrentImage_Click);
+            // 
+            // saveMazeAsMazeFile
+            // 
+            this.saveMazeAsMazeFile.Name = "saveMazeAsMazeFile";
+            this.saveMazeAsMazeFile.Size = new System.Drawing.Size(180, 22);
+            this.saveMazeAsMazeFile.Text = "As Maze File";
+            this.saveMazeAsMazeFile.Click += new System.EventHandler(this.saveMazeAsMazeFile_Click);
             // 
             // Dimensions
             // 
@@ -96,6 +116,16 @@ namespace MazeDemonstration
             this.GenerateMaze.Size = new System.Drawing.Size(97, 19);
             this.GenerateMaze.Text = "Generate Maze";
             this.GenerateMaze.Click += new System.EventHandler(this.GenerateMaze_Click);
+            // 
+            // ResetMaze
+            // 
+            this.ResetMaze.BackColor = System.Drawing.SystemColors.MenuBar;
+            this.ResetMaze.Enabled = false;
+            this.ResetMaze.Margin = new System.Windows.Forms.Padding(1);
+            this.ResetMaze.Name = "ResetMaze";
+            this.ResetMaze.Size = new System.Drawing.Size(78, 19);
+            this.ResetMaze.Text = "Reset Maze";
+            this.ResetMaze.Click += new System.EventHandler(this.resetMazeToolStripMenuItem_Click);
             // 
             // mazePictureBox
             // 
@@ -151,15 +181,13 @@ namespace MazeDemonstration
             this.instantCheckBox.UseVisualStyleBackColor = true;
             this.instantCheckBox.CheckedChanged += new System.EventHandler(this.instantCheckBox_CheckedChanged);
             // 
-            // ResetMaze
+            // openMazeFile
             // 
-            this.ResetMaze.BackColor = System.Drawing.SystemColors.MenuBar;
-            this.ResetMaze.Enabled = false;
-            this.ResetMaze.Margin = new System.Windows.Forms.Padding(1);
-            this.ResetMaze.Name = "ResetMaze";
-            this.ResetMaze.Size = new System.Drawing.Size(78, 19);
-            this.ResetMaze.Text = "Reset Maze";
-            this.ResetMaze.Click += new System.EventHandler(this.resetMazeToolStripMenuItem_Click);
+            this.openMazeFile.BackColor = System.Drawing.SystemColors.Control;
+            this.openMazeFile.Name = "openMazeFile";
+            this.openMazeFile.Size = new System.Drawing.Size(100, 21);
+            this.openMazeFile.Text = "Open Maze File";
+            this.openMazeFile.Click += new System.EventHandler(this.openMazeFile_Click);
             // 
             // MazeGeneratorSolverForm
             // 
@@ -195,9 +223,12 @@ namespace MazeDemonstration
         private System.Windows.Forms.Label timeIntervalLabel;
         private System.Windows.Forms.ToolStripMenuItem TimeInterval;
         private System.Windows.Forms.Timer mazeGenerationStepTimer;
-        private System.Windows.Forms.ToolStripMenuItem saveCurrentImage;
+        private System.Windows.Forms.ToolStripMenuItem saveMaze;
         private System.Windows.Forms.CheckBox instantCheckBox;
         private System.Windows.Forms.ToolStripMenuItem ResetMaze;
+        private System.Windows.Forms.ToolStripMenuItem saveMazeAsCurrentImage;
+        private System.Windows.Forms.ToolStripMenuItem saveMazeAsMazeFile;
+        private System.Windows.Forms.ToolStripMenuItem openMazeFile;
     }
 }
 

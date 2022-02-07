@@ -8,13 +8,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using System.IO;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 
 namespace MazeDemonstration
 {
     public partial class MazeGeneratorSolverForm : Form
     {
-        Maze maze = new Maze();
+        Maze maze;
         Bitmap mazeBitmap;
         int timeIntervalBetweenGenerationSteps = 25;
         int timerTick = 0;
@@ -26,6 +28,7 @@ namespace MazeDemonstration
             dimensionsLabel.Tag = new Point(3, 3);
             timeIntervalLabel.Tag = 25;
             // Get Default Maze
+            maze = new Maze();
             mazeBitmap = maze.GetMazeBitmap(bgColourBrush);
             DisplayMazeBitmap(maze, mazeBitmap);
             bgColourBrush = new SolidBrush(DefaultBackColor);
@@ -39,6 +42,7 @@ namespace MazeDemonstration
             TimeInterval.Enabled = false;
             GenerateMaze.Enabled = false;
             ResetMaze.Enabled = true;
+            openMazeFile.Enabled = false;
             if (!instantCheckBox.Checked)
             {
                 // Start Generation
@@ -72,6 +76,8 @@ namespace MazeDemonstration
                 mazeGenerationStepTimer.Tag = null;
                 mazeGenerationStepTimer.Stop();
                 timerTick = 0;
+                // Enable Open Maze
+                openMazeFile.Enabled = true;
             }
         }
 
@@ -125,17 +131,17 @@ namespace MazeDemonstration
             int pictureBoxHeight = maze.dimensions[1] * Consts.pixelsPerDimension + Consts.pictureBoxPaddingPixels;
             mazePictureBox.Size = new Size(pictureBoxWidth, pictureBoxHeight);
             mazePictureBox.Image = mazeBitmap;
-            mazePictureBox.Invalidate();
         }
 
-        private void saveCurrentImage_Click(object sender, EventArgs e)
+        private void saveMazeAsCurrentImage_Click(object sender, EventArgs e)
         {
             SaveFileDialog saveFileDialogue = new SaveFileDialog();
             saveFileDialogue.Filter = "Images|*.png;*.bmp;*.jpg;*.jpeg";
+            saveFileDialogue.RestoreDirectory = true;
             DialogResult dialogResult = saveFileDialogue.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-                string fileEXT = System.IO.Path.GetExtension(saveFileDialogue.FileName);
+                string fileEXT = Path.GetExtension(saveFileDialogue.FileName);
                 ImageFormat format;
                 switch (fileEXT)
                 {
@@ -154,6 +160,60 @@ namespace MazeDemonstration
             }
         }
 
+        private void saveMazeAsMazeFile_Click(object sender, EventArgs e)
+        {
+            // Create a Save File Dialogue to help the user save the file.
+            SaveFileDialog saveFileDialogue = new SaveFileDialog();
+            saveFileDialogue.Filter = "Maze File|*.mz;*.maze;*.jlcmz;*.jlcmaze;*.xml";
+            saveFileDialogue.RestoreDirectory = true;
+            DialogResult dialogResult = saveFileDialogue.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+            {
+                string fileEXT = Path.GetExtension(saveFileDialogue.FileName);
+                string fileName = Path.ChangeExtension(saveFileDialogue.FileName, null);
+                switch (fileEXT)
+                {
+                    case ".mz":
+                    case ".maze":
+                    case ".jlcmz":
+                    case ".jlcmaze":
+                    case ".xml":
+                        fileName += fileEXT;
+                        break;
+                    default:
+                        fileName += ".mz";
+                        break;
+                }
+                // Create an XmlSerializer to serialize the data in the Maze maze obj.
+                XmlSerializer xmlSerial = new XmlSerializer(typeof(Maze));
+                using (FileStream stream = new FileStream(fileName, FileMode.Create))
+                {
+                    Console.WriteLine(fileName);
+                    xmlSerial.Serialize(stream, maze);
+                }
+            }
+        }
+
+        private void openMazeFile_Click(object sender, EventArgs e)
+        {
+            // Create an Open File Dialogue to help the user save the file.
+            OpenFileDialog openFileDialogue = new OpenFileDialog();
+            openFileDialogue.Filter = "Maze File|*.mz;*.maze;*.jlcmz;*.jlcmaze;*.xml";
+            openFileDialogue.RestoreDirectory = true;
+
+            DialogResult dialogResult = openFileDialogue.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+            {
+                // Create an XmlSerializer to deserialize the data in the Maze maze obj.
+                XmlSerializer xmlSerial = new XmlSerializer(typeof(Maze));
+                using (FileStream stream = new FileStream(openFileDialogue.FileName, FileMode.Open))
+                {
+                    maze = (Maze)xmlSerial.Deserialize(stream);
+                }
+                Bitmap mazeBitmap = maze.GetMazeBitmap(bgColourBrush);
+                DisplayMazeBitmap(maze, mazeBitmap);
+            }
+        }
         private void resetMazeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (mazeGenerationStepTimer.Enabled)
