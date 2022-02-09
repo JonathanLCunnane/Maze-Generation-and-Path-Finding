@@ -43,9 +43,10 @@ namespace MazeDemonstration
             TimeInterval.Enabled = false;
             GenerateMaze.Enabled = false;
             ResetMaze.Enabled = true;
-            openMazeFile.Enabled = false;
             if (!instantCheckBox.Checked)
             {
+                openMazeFile.Enabled = false;
+
                 // Start Generation
                 Point startPoint = new Point(0, 0);
                 mazeGenerationStepTimer.Tag = maze.StepGeneration(startPoint);

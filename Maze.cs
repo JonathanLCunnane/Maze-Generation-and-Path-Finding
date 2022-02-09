@@ -25,10 +25,11 @@ namespace MazeDemonstration
         public MazeNode[,] nodes { get; set; }
         
         [ProtoMember(2), Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
-        public MazeNode[] nodesFlatten
+        private MazeNode[] nodesFlatten
         {
             get
             {
+                if (nodes == null) { return null;  }
                 MazeNode[] flattenedNodes = new MazeNode[dimensions[0]*dimensions[1]];
                 int count = 0;
                 foreach (MazeNode node in nodes)
@@ -40,12 +41,12 @@ namespace MazeDemonstration
             }
             set
             {
-                MazeNode[,] nodes = new MazeNode[dimensions[0], dimensions[1]];
+                nodes = new MazeNode[dimensions[0], dimensions[1]];
                 for(int x = 0; x < dimensions[0]; x++)
                 {
                     for(int y = 0; y < dimensions[1]; y++)
                     {
-                        nodes[x, y] = value[y * dimensions[0] + x];
+                        nodes[x, y] = value[x * dimensions[0] + y];
                     }
                 }
             }
