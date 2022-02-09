@@ -6,6 +6,7 @@ using System.Threading;
 using System.Drawing;
 using System.Xml.Serialization;
 using System.ComponentModel;
+using ProtoBuf;
 
 /// <summary>
 /// 
@@ -14,14 +15,16 @@ using System.ComponentModel;
 
 namespace MazeDemonstration
 {
+    [ProtoContract(SkipConstructor=true)]
     public class Maze
     {
         // Maze Initialisation
+        [ProtoMember(1)]
         public int[] dimensions { get; }
-        [XmlIgnore]
+        [ProtoIgnore]
         public MazeNode[,] nodes { get; set; }
-
-        [XmlElement("nodes"), Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
+        
+        [ProtoMember(2), Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
         public MazeNode[] nodesFlatten
         {
             get

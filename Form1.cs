@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml.Serialization;
+using ProtoBuf;
 
 namespace MazeDemonstration
 {
@@ -164,7 +165,7 @@ namespace MazeDemonstration
         {
             // Create a Save File Dialogue to help the user save the file.
             SaveFileDialog saveFileDialogue = new SaveFileDialog();
-            saveFileDialogue.Filter = "Maze File|*.mz;*.maze;*.jlcmz;*.jlcmaze;*.xml";
+            saveFileDialogue.Filter = "Maze File|*.mz;*.jlcmz;*.proto";
             saveFileDialogue.RestoreDirectory = true;
             DialogResult dialogResult = saveFileDialogue.ShowDialog();
             if (dialogResult == DialogResult.OK)
@@ -174,22 +175,18 @@ namespace MazeDemonstration
                 switch (fileEXT)
                 {
                     case ".mz":
-                    case ".maze":
                     case ".jlcmz":
-                    case ".jlcmaze":
-                    case ".xml":
+                    case ".proto":
                         fileName += fileEXT;
                         break;
                     default:
                         fileName += ".mz";
                         break;
                 }
-                // Create an XmlSerializer to serialize the data in the Maze maze obj.
-                XmlSerializer xmlSerial = new XmlSerializer(typeof(Maze));
+                // Create an Protobuf Serializer to serialize the data in the Maze maze obj.
                 using (FileStream stream = new FileStream(fileName, FileMode.Create))
                 {
-                    Console.WriteLine(fileName);
-                    xmlSerial.Serialize(stream, maze);
+                    Serializer.Serialize(stream, maze);
                 }
             }
         }
@@ -198,17 +195,16 @@ namespace MazeDemonstration
         {
             // Create an Open File Dialogue to help the user save the file.
             OpenFileDialog openFileDialogue = new OpenFileDialog();
-            openFileDialogue.Filter = "Maze File|*.mz;*.maze;*.jlcmz;*.jlcmaze;*.xml";
+            openFileDialogue.Filter = "Maze File|*.mz;*.jlcmz;*.proto";
             openFileDialogue.RestoreDirectory = true;
 
             DialogResult dialogResult = openFileDialogue.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-                // Create an XmlSerializer to deserialize the data in the Maze maze obj.
-                XmlSerializer xmlSerial = new XmlSerializer(typeof(Maze));
+                // Create a Proto Serializer to deserialize the data in the Maze maze obj.
                 using (FileStream stream = new FileStream(openFileDialogue.FileName, FileMode.Open))
                 {
-                    maze = (Maze)xmlSerial.Deserialize(stream);
+                    maze = Serializer.Deserialize<Maze>(stream);
                 }
                 Bitmap mazeBitmap = maze.GetMazeBitmap(bgColourBrush);
                 DisplayMazeBitmap(maze, mazeBitmap);

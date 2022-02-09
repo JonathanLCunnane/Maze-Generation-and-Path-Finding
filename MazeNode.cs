@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ProtoBuf;
 
 /// <summary>
 /// Each Maze Node will have a simple structure:
@@ -13,10 +14,14 @@ using System.Threading.Tasks;
 
 namespace MazeDemonstration
 {
+    [ProtoContract(SkipConstructor = true)]
     public class MazeNode
     {
+        [ProtoMember(1)]
         public bool North { get; set; }
+        [ProtoMember(2)]
         public bool West { get; set; }
+        [ProtoIgnore]
         public bool Visited { get; set; }
         public MazeNode()
         {

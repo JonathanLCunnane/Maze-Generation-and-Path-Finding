@@ -31,6 +31,7 @@ namespace MazeDemonstration
         {
             this.components = new System.ComponentModel.Container();
             this.MainMenu = new System.Windows.Forms.MenuStrip();
+            this.openMazeFile = new System.Windows.Forms.ToolStripMenuItem();
             this.saveMaze = new System.Windows.Forms.ToolStripMenuItem();
             this.saveMazeAsCurrentImage = new System.Windows.Forms.ToolStripMenuItem();
             this.saveMazeAsMazeFile = new System.Windows.Forms.ToolStripMenuItem();
@@ -44,7 +45,6 @@ namespace MazeDemonstration
             this.timeIntervalLabel = new System.Windows.Forms.Label();
             this.mazeGenerationStepTimer = new System.Windows.Forms.Timer(this.components);
             this.instantCheckBox = new System.Windows.Forms.CheckBox();
-            this.openMazeFile = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mazePictureBox)).BeginInit();
             this.SuspendLayout();
@@ -65,6 +65,14 @@ namespace MazeDemonstration
             this.MainMenu.TabIndex = 0;
             this.MainMenu.Text = "Main Menu";
             // 
+            // openMazeFile
+            // 
+            this.openMazeFile.BackColor = System.Drawing.SystemColors.Control;
+            this.openMazeFile.Name = "openMazeFile";
+            this.openMazeFile.Size = new System.Drawing.Size(100, 21);
+            this.openMazeFile.Text = "Open Maze File";
+            this.openMazeFile.Click += new System.EventHandler(this.openMazeFile_Click);
+            // 
             // saveMaze
             // 
             this.saveMaze.BackColor = System.Drawing.SystemColors.Control;
@@ -73,8 +81,8 @@ namespace MazeDemonstration
             this.saveMazeAsMazeFile});
             this.saveMaze.Margin = new System.Windows.Forms.Padding(1);
             this.saveMaze.Name = "saveMaze";
-            this.saveMaze.Size = new System.Drawing.Size(110, 19);
-            this.saveMaze.Text = "Save Maze Image";
+            this.saveMaze.Size = new System.Drawing.Size(74, 19);
+            this.saveMaze.Text = "Save Maze";
             // 
             // saveMazeAsCurrentImage
             // 
@@ -141,7 +149,7 @@ namespace MazeDemonstration
             this.currentSettingsPlaceholder.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
             this.currentSettingsPlaceholder.Location = new System.Drawing.Point(12, 34);
             this.currentSettingsPlaceholder.Name = "currentSettingsPlaceholder";
-            this.currentSettingsPlaceholder.Size = new System.Drawing.Size(107, 16);
+            this.currentSettingsPlaceholder.Size = new System.Drawing.Size(106, 16);
             this.currentSettingsPlaceholder.TabIndex = 2;
             this.currentSettingsPlaceholder.Text = "Current Settings: ";
             // 
@@ -151,7 +159,7 @@ namespace MazeDemonstration
             this.dimensionsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
             this.dimensionsLabel.Location = new System.Drawing.Point(125, 34);
             this.dimensionsLabel.Name = "dimensionsLabel";
-            this.dimensionsLabel.Size = new System.Drawing.Size(117, 16);
+            this.dimensionsLabel.Size = new System.Drawing.Size(116, 16);
             this.dimensionsLabel.TabIndex = 3;
             this.dimensionsLabel.Text = "Dimensions - (3, 3)";
             // 
@@ -161,7 +169,7 @@ namespace MazeDemonstration
             this.timeIntervalLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
             this.timeIntervalLabel.Location = new System.Drawing.Point(327, 34);
             this.timeIntervalLabel.Name = "timeIntervalLabel";
-            this.timeIntervalLabel.Size = new System.Drawing.Size(186, 16);
+            this.timeIntervalLabel.Size = new System.Drawing.Size(185, 16);
             this.timeIntervalLabel.TabIndex = 4;
             this.timeIntervalLabel.Text = "Interval Between Steps - 25ms";
             // 
@@ -180,14 +188,6 @@ namespace MazeDemonstration
             this.instantCheckBox.Text = "No Interval";
             this.instantCheckBox.UseVisualStyleBackColor = true;
             this.instantCheckBox.CheckedChanged += new System.EventHandler(this.instantCheckBox_CheckedChanged);
-            // 
-            // openMazeFile
-            // 
-            this.openMazeFile.BackColor = System.Drawing.SystemColors.Control;
-            this.openMazeFile.Name = "openMazeFile";
-            this.openMazeFile.Size = new System.Drawing.Size(100, 21);
-            this.openMazeFile.Text = "Open Maze File";
-            this.openMazeFile.Click += new System.EventHandler(this.openMazeFile_Click);
             // 
             // MazeGeneratorSolverForm
             // 
