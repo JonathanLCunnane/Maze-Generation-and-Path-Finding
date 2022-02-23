@@ -30,6 +30,7 @@ namespace MazeDemonstration
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MazeGeneratorSolverForm));
             this.MainMenu = new System.Windows.Forms.MenuStrip();
             this.openMazeFile = new System.Windows.Forms.ToolStripMenuItem();
             this.saveMaze = new System.Windows.Forms.ToolStripMenuItem();
@@ -39,6 +40,7 @@ namespace MazeDemonstration
             this.TimeInterval = new System.Windows.Forms.ToolStripMenuItem();
             this.GenerateMaze = new System.Windows.Forms.ToolStripMenuItem();
             this.ResetMaze = new System.Windows.Forms.ToolStripMenuItem();
+            this.OpenInSolver = new System.Windows.Forms.ToolStripMenuItem();
             this.mazePictureBox = new System.Windows.Forms.PictureBox();
             this.currentSettingsPlaceholder = new System.Windows.Forms.Label();
             this.dimensionsLabel = new System.Windows.Forms.Label();
@@ -58,18 +60,20 @@ namespace MazeDemonstration
             this.Dimensions,
             this.TimeInterval,
             this.GenerateMaze,
-            this.ResetMaze});
+            this.ResetMaze,
+            this.OpenInSolver});
             this.MainMenu.Location = new System.Drawing.Point(0, 0);
             this.MainMenu.Name = "MainMenu";
-            this.MainMenu.Size = new System.Drawing.Size(1206, 25);
+            this.MainMenu.Size = new System.Drawing.Size(1184, 25);
             this.MainMenu.TabIndex = 0;
             this.MainMenu.Text = "Main Menu";
             // 
             // openMazeFile
             // 
             this.openMazeFile.BackColor = System.Drawing.SystemColors.Control;
+            this.openMazeFile.Margin = new System.Windows.Forms.Padding(1);
             this.openMazeFile.Name = "openMazeFile";
-            this.openMazeFile.Size = new System.Drawing.Size(100, 21);
+            this.openMazeFile.Size = new System.Drawing.Size(100, 19);
             this.openMazeFile.Text = "Open Maze File";
             this.openMazeFile.Click += new System.EventHandler(this.openMazeFile_Click);
             // 
@@ -87,14 +91,14 @@ namespace MazeDemonstration
             // saveMazeAsCurrentImage
             // 
             this.saveMazeAsCurrentImage.Name = "saveMazeAsCurrentImage";
-            this.saveMazeAsCurrentImage.Size = new System.Drawing.Size(180, 22);
+            this.saveMazeAsCurrentImage.Size = new System.Drawing.Size(139, 22);
             this.saveMazeAsCurrentImage.Text = "As Image";
             this.saveMazeAsCurrentImage.Click += new System.EventHandler(this.saveMazeAsCurrentImage_Click);
             // 
             // saveMazeAsMazeFile
             // 
             this.saveMazeAsMazeFile.Name = "saveMazeAsMazeFile";
-            this.saveMazeAsMazeFile.Size = new System.Drawing.Size(180, 22);
+            this.saveMazeAsMazeFile.Size = new System.Drawing.Size(139, 22);
             this.saveMazeAsMazeFile.Text = "As Maze File";
             this.saveMazeAsMazeFile.Click += new System.EventHandler(this.saveMazeAsMazeFile_Click);
             // 
@@ -135,6 +139,15 @@ namespace MazeDemonstration
             this.ResetMaze.Text = "Reset Maze";
             this.ResetMaze.Click += new System.EventHandler(this.resetMazeToolStripMenuItem_Click);
             // 
+            // OpenInSolver
+            // 
+            this.OpenInSolver.BackColor = System.Drawing.SystemColors.MenuBar;
+            this.OpenInSolver.Margin = new System.Windows.Forms.Padding(1);
+            this.OpenInSolver.Name = "OpenInSolver";
+            this.OpenInSolver.Size = new System.Drawing.Size(96, 19);
+            this.OpenInSolver.Text = "Open In Solver";
+            this.OpenInSolver.Click += new System.EventHandler(this.OpenInSolver_Click);
+            // 
             // mazePictureBox
             // 
             this.mazePictureBox.Location = new System.Drawing.Point(12, 53);
@@ -149,7 +162,7 @@ namespace MazeDemonstration
             this.currentSettingsPlaceholder.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
             this.currentSettingsPlaceholder.Location = new System.Drawing.Point(12, 34);
             this.currentSettingsPlaceholder.Name = "currentSettingsPlaceholder";
-            this.currentSettingsPlaceholder.Size = new System.Drawing.Size(106, 16);
+            this.currentSettingsPlaceholder.Size = new System.Drawing.Size(107, 16);
             this.currentSettingsPlaceholder.TabIndex = 2;
             this.currentSettingsPlaceholder.Text = "Current Settings: ";
             // 
@@ -159,7 +172,7 @@ namespace MazeDemonstration
             this.dimensionsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
             this.dimensionsLabel.Location = new System.Drawing.Point(125, 34);
             this.dimensionsLabel.Name = "dimensionsLabel";
-            this.dimensionsLabel.Size = new System.Drawing.Size(116, 16);
+            this.dimensionsLabel.Size = new System.Drawing.Size(117, 16);
             this.dimensionsLabel.TabIndex = 3;
             this.dimensionsLabel.Text = "Dimensions - (3, 3)";
             // 
@@ -169,7 +182,7 @@ namespace MazeDemonstration
             this.timeIntervalLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
             this.timeIntervalLabel.Location = new System.Drawing.Point(327, 34);
             this.timeIntervalLabel.Name = "timeIntervalLabel";
-            this.timeIntervalLabel.Size = new System.Drawing.Size(185, 16);
+            this.timeIntervalLabel.Size = new System.Drawing.Size(186, 16);
             this.timeIntervalLabel.TabIndex = 4;
             this.timeIntervalLabel.Text = "Interval Between Steps - 25ms";
             // 
@@ -194,13 +207,14 @@ namespace MazeDemonstration
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(1206, 598);
+            this.ClientSize = new System.Drawing.Size(1184, 561);
             this.Controls.Add(this.instantCheckBox);
             this.Controls.Add(this.timeIntervalLabel);
             this.Controls.Add(this.dimensionsLabel);
             this.Controls.Add(this.currentSettingsPlaceholder);
             this.Controls.Add(this.mazePictureBox);
             this.Controls.Add(this.MainMenu);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.MainMenu;
             this.Name = "MazeGeneratorSolverForm";
             this.Text = "Maze Generator & Solver";
@@ -229,6 +243,7 @@ namespace MazeDemonstration
         private System.Windows.Forms.ToolStripMenuItem saveMazeAsCurrentImage;
         private System.Windows.Forms.ToolStripMenuItem saveMazeAsMazeFile;
         private System.Windows.Forms.ToolStripMenuItem openMazeFile;
+        private System.Windows.Forms.ToolStripMenuItem OpenInSolver;
     }
 }
 

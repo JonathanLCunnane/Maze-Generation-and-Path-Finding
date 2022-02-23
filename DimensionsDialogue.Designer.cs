@@ -29,6 +29,7 @@ namespace MazeDemonstration
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DimensionsDialogue));
             this.xLabel = new System.Windows.Forms.Label();
             this.yLabel = new System.Windows.Forms.Label();
             this.setDimensionsButton = new System.Windows.Forms.Button();
@@ -133,6 +134,7 @@ namespace MazeDemonstration
             this.Controls.Add(this.yLabel);
             this.Controls.Add(this.xLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "DimensionsDialogue";
             this.Text = "Enter Dimensions";
             ((System.ComponentModel.ISupportInitialize)(this.xDimension)).EndInit();

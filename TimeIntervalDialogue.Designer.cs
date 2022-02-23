@@ -29,6 +29,7 @@ namespace MazeDemonstration
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TimeIntervalDialogue));
             this.cancelDimensionsButton = new System.Windows.Forms.Button();
             this.setTimeIntervalButton = new System.Windows.Forms.Button();
             this.setTimeIntervalLabel = new System.Windows.Forms.Label();
@@ -97,6 +98,7 @@ namespace MazeDemonstration
             this.Controls.Add(this.cancelDimensionsButton);
             this.Controls.Add(this.setTimeIntervalButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "TimeIntervalDialogue";
             this.Text = "Time Interval Dialogue";
             ((System.ComponentModel.ISupportInitialize)(this.timeIntervalNumericUpDown)).EndInit();

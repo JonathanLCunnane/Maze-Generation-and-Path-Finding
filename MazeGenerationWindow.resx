@@ -117,28 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <metadata name="MainMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <metadata name="mazeGenerationStepTimer.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>127, 17</value>
+  </metadata>
+  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>62</value>
+  </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAAL8yAAC/MgAAAAAAAAAA
-        AAD/////////////////////////////////////////////////////////////////////////////
-        ////////4+Pj/8/Pz//39/f/xMTE/9DQ0P/+/v7///////////////////////r6+v/Gxsb/zc3N//f3
-        9//Kysr/7u7u/5+fn/9RUVH/hoaG/ycnJ/+np6f/6urq/+np6f/p6en/6enp/+np6f/o6Oj/jY2N/ycn
-        J/+UlJT/RERE/8XFxf+goKD/ExMT/wkJCf8ODg7/KSkp/ygoKP8oKCj/KCgo/ygoKP8oKCj/KCgo/ygo
-        KP8ICAj/DAwM/x0dHf/Gxsb/np6e/zExMf81NTX/GRkZ/3p6ev+Ojo7/jY2N/42Njf+NjY3/jY2N/46O
-        jv9tbW3/EBAQ/0FBQf8vLy//xMTE/7q6uv+JiYn/1NTU/2ZmZv+urq7/////////////////////////
-        ///6+vr/lpaW/3Nzc//a2tr/fHx8/9XW1v/y8vL/39/f/+Pj4//f39//3Nzc/+Hh4f/i4uL/4uLi/+Li
-        4v/i4uL/4eHh/9vb2//g4OD/4+Pj/+Dg4P/39/f/ra2t/yUlJf8hISH/ISEh/yEhIf8hISH/ISEh/yEh
-        If8hISH/ISEh/yEhIf8hISH/ISEh/yAgIP8xMTH/zs7O/6CgoP8VFRX/h4eH/5+goP+enp7/np6e/56e
-        nv+enp7/np6e/56env+enp7/np6e/6Chof90dHT/FxcX/8bGxv+fn5//Hh4e/9ra2v//////////////
-        ////////////////////////////////////////u7u7/xoaGv/Gxsb/n5+f/x4eHv/a2tr/////////
-        /////////////////////////////////////////////7u7u/8aGhr/xsbG/5+fn/8eHh7/2tra////
-        //////////////////////////////////////////////////+7u7v/Ghoa/8bGxv+fn5//Ghoa/7Oz
-        s//T09P/0dHR/9HS0f/R0dH/0tLS/9HS0f/R0dL/0dLS/9LS0f/V1dX/mpqa/xkZGf/Gxsb/o6Oj/wwM
-        DP8VFRX/GBgY/xgYGP8YGBj/GBgY/xgYGP8YGBj/GBgY/xgYGP8YGBj/GBgY/xISEv8XFxf/yMjI/+Pj
-        4/+0tbX/srKy/7Kysv+ysrL/srKy/7Kysv+ysrL/srKy/7Kysv+ysrL/srKy/7Kysv+ysrL/uLm5/+7u
-        7v//////////////////////////////////////////////////////////////////////////////
-        ////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAAMMOAADDDgAAAAAAAAAA
+        AADw8PD/8PDw//Dw8P/w8PD/8PDw//Dw8P/w8PD/8PDw//Dw8P/w8PD/8PDw//Dw8P/w8PD/8PDw//Dw
+        8P/w8PD/8PDw/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
+        AP8AAAD/8PDw//Dw8P8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAA
+        AP8AAAD/AAAA//Dw8P/w8PD/AAAA/wAAAP/w8PD/8PDw//Dw8P/w8PD/8PDw//Dw8P8AAAD/AAAA//Dw
+        8P/w8PD/AAAA/wAAAP/w8PD/8PDw/wAAAP8AAAD/8PDw//Dw8P/w8PD/8PDw//Dw8P/w8PD/AAAA/wAA
+        AP/w8PD/8PDw/wAAAP8AAAD/8PDw//Dw8P8AAAD/AAAA//Dw8P/w8PD/AAAA/wAAAP/w8PD/8PDw/wAA
+        AP8AAAD/8PDw//Dw8P8AAAD/AAAA//Dw8P/w8PD/AAAA/wAAAP/w8PD/8PDw/wAAAP8AAAD/8PDw//Dw
+        8P8AAAD/AAAA//Dw8P/w8PD/AAAA/wAAAP/w8PD/8PDw/wAAAP8AAAD/8PDw//Dw8P8AAAD/AAAA//Dw
+        8P/w8PD/8PDw//Dw8P/w8PD/8PDw/wAAAP8AAAD/8PDw//Dw8P8AAAD/AAAA//Dw8P/w8PD/AAAA/wAA
+        AP/w8PD/8PDw//Dw8P/w8PD/8PDw//Dw8P8AAAD/AAAA//Dw8P/w8PD/AAAA/wAAAP/w8PD/8PDw/wAA
+        AP8AAAD/AAAA/wAAAP8AAAD/AAAA//Dw8P/w8PD/AAAA/wAAAP/w8PD/8PDw/wAAAP8AAAD/8PDw//Dw
+        8P8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP/w8PD/8PDw/wAAAP8AAAD/8PDw//Dw8P8AAAD/AAAA//Dw
+        8P/w8PD/AAAA/wAAAP/w8PD/8PDw//Dw8P/w8PD/8PDw//Dw8P8AAAD/AAAA//Dw8P/w8PD/AAAA/wAA
+        AP/w8PD/8PDw/wAAAP8AAAD/8PDw//Dw8P/w8PD/8PDw//Dw8P/w8PD/AAAA/wAAAP/w8PD/8PDw/wAA
+        AP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/8PDw//Dw
+        8P8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA/wAAAP8AAAD/AAAA//Dw
+        8P/w8PD/8PDw//Dw8P/w8PD/8PDw//Dw8P/w8PD/8PDw//Dw8P/w8PD/8PDw//Dw8P/w8PD/8PDw//Dw
+        8P/w8PD/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
         AAAAAAAAAAAAAA==
 </value>
   </data>

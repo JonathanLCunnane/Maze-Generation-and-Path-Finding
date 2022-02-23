@@ -227,5 +227,11 @@ namespace MazeDemonstration
             TimeInterval.Enabled = true;
             GenerateMaze.Enabled = true;
         }
+
+        private void OpenInSolver_Click(object sender, EventArgs e)
+        {
+            MazeSolverWindow solver = new MazeSolverWindow();
+            solver.Show();
+        }
     }
 }
