@@ -39,7 +39,9 @@ namespace MazeDemonstration
             this.finishPointLabel = new System.Windows.Forms.Label();
             this.algorithmTypeLabel = new System.Windows.Forms.Label();
             this.MainMenu = new System.Windows.Forms.MenuStrip();
+            this.exitSolver = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.mazePictureBox)).BeginInit();
+            this.MainMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // instantCheckBox
@@ -58,7 +60,7 @@ namespace MazeDemonstration
             this.timeIntervalLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
             this.timeIntervalLabel.Location = new System.Drawing.Point(126, 60);
             this.timeIntervalLabel.Name = "timeIntervalLabel";
-            this.timeIntervalLabel.Size = new System.Drawing.Size(186, 16);
+            this.timeIntervalLabel.Size = new System.Drawing.Size(185, 16);
             this.timeIntervalLabel.TabIndex = 9;
             this.timeIntervalLabel.Text = "Interval Between Steps - 25ms";
             // 
@@ -68,9 +70,9 @@ namespace MazeDemonstration
             this.dimensionsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
             this.dimensionsLabel.Location = new System.Drawing.Point(126, 33);
             this.dimensionsLabel.Name = "dimensionsLabel";
-            this.dimensionsLabel.Size = new System.Drawing.Size(117, 16);
+            this.dimensionsLabel.Size = new System.Drawing.Size(99, 16);
             this.dimensionsLabel.TabIndex = 8;
-            this.dimensionsLabel.Text = "Dimensions - (3, 3)";
+            this.dimensionsLabel.Text = "Dimensions - (,)";
             // 
             // currentSettingsPlaceholder
             // 
@@ -78,7 +80,7 @@ namespace MazeDemonstration
             this.currentSettingsPlaceholder.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
             this.currentSettingsPlaceholder.Location = new System.Drawing.Point(13, 33);
             this.currentSettingsPlaceholder.Name = "currentSettingsPlaceholder";
-            this.currentSettingsPlaceholder.Size = new System.Drawing.Size(107, 16);
+            this.currentSettingsPlaceholder.Size = new System.Drawing.Size(106, 16);
             this.currentSettingsPlaceholder.TabIndex = 7;
             this.currentSettingsPlaceholder.Text = "Current Settings: ";
             // 
@@ -96,9 +98,9 @@ namespace MazeDemonstration
             this.startPointLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
             this.startPointLabel.Location = new System.Drawing.Point(336, 33);
             this.startPointLabel.Name = "startPointLabel";
-            this.startPointLabel.Size = new System.Drawing.Size(73, 16);
+            this.startPointLabel.Size = new System.Drawing.Size(55, 16);
             this.startPointLabel.TabIndex = 11;
-            this.startPointLabel.Text = "Start - (0, 0)";
+            this.startPointLabel.Text = "Start - (,)";
             // 
             // finishPointLabel
             // 
@@ -106,9 +108,9 @@ namespace MazeDemonstration
             this.finishPointLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
             this.finishPointLabel.Location = new System.Drawing.Point(534, 34);
             this.finishPointLabel.Name = "finishPointLabel";
-            this.finishPointLabel.Size = new System.Drawing.Size(80, 16);
+            this.finishPointLabel.Size = new System.Drawing.Size(63, 16);
             this.finishPointLabel.TabIndex = 12;
-            this.finishPointLabel.Text = "Finish - (x, y)";
+            this.finishPointLabel.Text = "Finish - (,)";
             // 
             // algorithmTypeLabel
             // 
@@ -116,17 +118,28 @@ namespace MazeDemonstration
             this.algorithmTypeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
             this.algorithmTypeLabel.Location = new System.Drawing.Point(534, 62);
             this.algorithmTypeLabel.Name = "algorithmTypeLabel";
-            this.algorithmTypeLabel.Size = new System.Drawing.Size(192, 16);
+            this.algorithmTypeLabel.Size = new System.Drawing.Size(191, 16);
             this.algorithmTypeLabel.TabIndex = 13;
             this.algorithmTypeLabel.Text = "Pathfinding Algorithm Type - A*";
             // 
             // MainMenu
             // 
+            this.MainMenu.BackColor = System.Drawing.SystemColors.Window;
+            this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exitSolver});
             this.MainMenu.Location = new System.Drawing.Point(0, 0);
             this.MainMenu.Name = "MainMenu";
-            this.MainMenu.Size = new System.Drawing.Size(1184, 24);
+            this.MainMenu.Size = new System.Drawing.Size(1184, 25);
             this.MainMenu.TabIndex = 14;
             this.MainMenu.Text = "menuStrip1";
+            // 
+            // exitSolver
+            // 
+            this.exitSolver.BackColor = System.Drawing.SystemColors.Control;
+            this.exitSolver.Margin = new System.Windows.Forms.Padding(1);
+            this.exitSolver.Name = "exitSolver";
+            this.exitSolver.Size = new System.Drawing.Size(73, 19);
+            this.exitSolver.Text = "Exit Solver";
             // 
             // MazeSolverWindow
             // 
@@ -147,6 +160,8 @@ namespace MazeDemonstration
             this.Name = "MazeSolverWindow";
             this.Text = "Maze Solver Window";
             ((System.ComponentModel.ISupportInitialize)(this.mazePictureBox)).EndInit();
+            this.MainMenu.ResumeLayout(false);
+            this.MainMenu.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -163,5 +178,6 @@ namespace MazeDemonstration
         private System.Windows.Forms.Label finishPointLabel;
         private System.Windows.Forms.Label algorithmTypeLabel;
         private System.Windows.Forms.MenuStrip MainMenu;
+        private System.Windows.Forms.ToolStripMenuItem exitSolver;
     }
 }

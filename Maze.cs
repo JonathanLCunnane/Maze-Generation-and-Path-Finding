@@ -261,7 +261,7 @@ namespace MazeDemonstration
 
         public static Bitmap GetMazeBitmap(Maze maze, Brush bgBrush)
         {
-            Bitmap mazeBitmap = new Bitmap(maze.dimensions[0] * Consts.pixelsPerDimension + Consts.pictureBoxPaddingPixels, maze.dimensions[1] * Consts.pixelsPerDimension + Consts.pictureBoxPaddingPixels);
+            Bitmap mazeBitmap = new Bitmap(maze.dimensions[0] * Consts.pixelsPerDimension + Consts.pictureBoxPaddingPixels, maze.dimensions[1] * Consts.pixelsPerDimension + Consts.pictureBoxPaddingPixels, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
             Graphics mazeBitmapGraphics = Graphics.FromImage(mazeBitmap);
             mazeBitmapGraphics.FillRectangle(bgBrush, 0, 0, mazeBitmap.Width, mazeBitmap.Height);
             int rectangleX;

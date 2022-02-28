@@ -12,9 +12,18 @@ namespace MazeDemonstration
 {
     public partial class MazeSolverWindow : Form
     {
-        public MazeSolverWindow()
+        Maze maze { get; set; }
+        PictureBox picturebox { get; set; }
+        public MazeSolverWindow(Maze _maze, PictureBox _picturebox)
         {
+            // Get previous maze and bitmap
+            maze = _maze;
+            picturebox = _picturebox;
+            // Initialise Component
             InitializeComponent();
+            // Set up the current window with the maze not yet solved and other information.#
+            mazePictureBox.Size = picturebox.Size;
+            mazePictureBox.Image = picturebox.Image;
         }
     }
 }

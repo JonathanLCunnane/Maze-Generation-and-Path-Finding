@@ -22,8 +22,10 @@ namespace MazeDemonstration
         int timeIntervalBetweenGenerationSteps = 25;
         int timerTick = 0;
         Brush bgColourBrush = new SolidBrush(DefaultBackColor);
+        PointF imageStartPoint = new PointF(15, 60);
         public MazeGeneratorSolverForm()
         {
+            // Initialise the component
             InitializeComponent();
             // Set Default Tags
             dimensionsLabel.Tag = new Point(3, 3);
@@ -31,7 +33,12 @@ namespace MazeDemonstration
             // Get Default Maze
             maze = new Maze();
             mazeBitmap = maze.GetMazeBitmap(bgColourBrush);
-            DisplayMazeBitmap(maze, mazeBitmap);
+            //DisplayMazeBitmap(maze, mazeBitmap);
+            using (Graphics graphics = )
+            {
+                this.Paint
+                graphics.DrawImage(mazeBitmap, imageStartPoint);
+            }
             bgColourBrush = new SolidBrush(DefaultBackColor);
         }
 
@@ -60,8 +67,12 @@ namespace MazeDemonstration
                 // Generate and Display Maze
                 Point startPoint = new Point(0, 0);
                 maze.GenerateUnstepped(startPoint);
-                Bitmap mazeBitmap = maze.GetMazeBitmap(bgColourBrush);
-                DisplayMazeBitmap(maze, mazeBitmap);
+                mazeBitmap = maze.GetMazeBitmap(bgColourBrush);
+                //DisplayMazeBitmap(maze, mazeBitmap);
+                using (Graphics graphics = CreateGraphics())
+                {
+                    graphics.DrawImage(mazeBitmap, imageStartPoint);
+                }
             }
         }
 
@@ -70,7 +81,11 @@ namespace MazeDemonstration
             ((IEnumerator<MazeDelta>)mazeGenerationStepTimer.Tag).MoveNext();
             MazeDelta currChange = ((IEnumerator<MazeDelta>)mazeGenerationStepTimer.Tag).Current;
             mazeBitmap = maze.AlterMazeBitmap(mazeBitmap, currChange, bgColourBrush);
-            DisplayMazeBitmap(maze, mazeBitmap);
+            //DisplayMazeBitmap(maze, mazeBitmap);
+            using (Graphics graphics = CreateGraphics())
+            {
+                graphics.DrawImage(mazeBitmap, imageStartPoint);
+            }
             timerTick++;
             if (timerTick == maze.dimensions[0] * maze.dimensions[0] - 1)
             {
@@ -96,7 +111,11 @@ namespace MazeDemonstration
                 // Create new blank maze.
                 maze = new Maze(dimensionsDialogue.x, dimensionsDialogue.y);
                 mazeBitmap = maze.GetMazeBitmap(bgColourBrush);
-                DisplayMazeBitmap(maze, mazeBitmap);
+                //DisplayMazeBitmap(maze, mazeBitmap);
+                using (Graphics graphics = CreateGraphics())
+                {
+                    graphics.DrawImage(mazeBitmap, imageStartPoint);
+                }
             }
             // If 'Cancel' was clicked, do nothing
         }
@@ -207,8 +226,22 @@ namespace MazeDemonstration
                 {
                     maze = Serializer.Deserialize<Maze>(stream);
                 }
-                Bitmap mazeBitmap = maze.GetMazeBitmap(bgColourBrush);
-                DisplayMazeBitmap(maze, mazeBitmap);
+                // Change button status and dimensions label
+                // Change dimensions label.
+                dimensionsLabel.Text = $"Dimensions - ({maze.dimensions[0]}, {maze.dimensions[1]})";
+                dimensionsLabel.Tag = new Point(maze.dimensions[0], maze.dimensions[1]);
+                // Change button enabled/disabled.
+                instantCheckBox.Enabled = false;
+                Dimensions.Enabled = false;
+                TimeInterval.Enabled = false;
+                GenerateMaze.Enabled = false;
+                ResetMaze.Enabled = true;
+                mazeBitmap = maze.GetMazeBitmap(bgColourBrush);
+                //DisplayMazeBitmap(maze, mazeBitmap);
+                using (Graphics graphics = CreateGraphics())
+                {
+                    graphics.DrawImage(mazeBitmap, imageStartPoint);
+                }
             }
         }
         private void resetMazeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -220,7 +253,11 @@ namespace MazeDemonstration
             }
             maze = new Maze(maze.dimensions[0], maze.dimensions[1]);
             mazeBitmap = maze.GetMazeBitmap(bgColourBrush);
-            DisplayMazeBitmap(maze, mazeBitmap);
+            //DisplayMazeBitmap(maze, mazeBitmap);
+            using (Graphics graphics = CreateGraphics())
+            {
+                graphics.DrawImage(mazeBitmap, imageStartPoint);
+            }
             ResetMaze.Enabled = false;
             instantCheckBox.Enabled = true;
             Dimensions.Enabled = true;
@@ -230,8 +267,10 @@ namespace MazeDemonstration
 
         private void OpenInSolver_Click(object sender, EventArgs e)
         {
-            MazeSolverWindow solver = new MazeSolverWindow();
-            solver.Show();
+            MazeSolverWindow solver = new MazeSolverWindow(maze, mazePictureBox);
+            Hide();
+            solver.ShowDialog();
+            Show();
         }
     }
 }
