@@ -60,7 +60,7 @@ namespace MazeDemonstration
             this.timeIntervalLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
             this.timeIntervalLabel.Location = new System.Drawing.Point(126, 60);
             this.timeIntervalLabel.Name = "timeIntervalLabel";
-            this.timeIntervalLabel.Size = new System.Drawing.Size(185, 16);
+            this.timeIntervalLabel.Size = new System.Drawing.Size(186, 16);
             this.timeIntervalLabel.TabIndex = 9;
             this.timeIntervalLabel.Text = "Interval Between Steps - 25ms";
             // 
@@ -70,9 +70,9 @@ namespace MazeDemonstration
             this.dimensionsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
             this.dimensionsLabel.Location = new System.Drawing.Point(126, 33);
             this.dimensionsLabel.Name = "dimensionsLabel";
-            this.dimensionsLabel.Size = new System.Drawing.Size(99, 16);
+            this.dimensionsLabel.Size = new System.Drawing.Size(116, 16);
             this.dimensionsLabel.TabIndex = 8;
-            this.dimensionsLabel.Text = "Dimensions - (,)";
+            this.dimensionsLabel.Text = "Dimensions - (x, y)";
             // 
             // currentSettingsPlaceholder
             // 
@@ -80,7 +80,7 @@ namespace MazeDemonstration
             this.currentSettingsPlaceholder.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
             this.currentSettingsPlaceholder.Location = new System.Drawing.Point(13, 33);
             this.currentSettingsPlaceholder.Name = "currentSettingsPlaceholder";
-            this.currentSettingsPlaceholder.Size = new System.Drawing.Size(106, 16);
+            this.currentSettingsPlaceholder.Size = new System.Drawing.Size(107, 16);
             this.currentSettingsPlaceholder.TabIndex = 7;
             this.currentSettingsPlaceholder.Text = "Current Settings: ";
             // 
@@ -98,9 +98,9 @@ namespace MazeDemonstration
             this.startPointLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
             this.startPointLabel.Location = new System.Drawing.Point(336, 33);
             this.startPointLabel.Name = "startPointLabel";
-            this.startPointLabel.Size = new System.Drawing.Size(55, 16);
+            this.startPointLabel.Size = new System.Drawing.Size(73, 16);
             this.startPointLabel.TabIndex = 11;
-            this.startPointLabel.Text = "Start - (,)";
+            this.startPointLabel.Text = "Start - (0, 0)";
             // 
             // finishPointLabel
             // 
@@ -108,9 +108,9 @@ namespace MazeDemonstration
             this.finishPointLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
             this.finishPointLabel.Location = new System.Drawing.Point(534, 34);
             this.finishPointLabel.Name = "finishPointLabel";
-            this.finishPointLabel.Size = new System.Drawing.Size(63, 16);
+            this.finishPointLabel.Size = new System.Drawing.Size(83, 16);
             this.finishPointLabel.TabIndex = 12;
-            this.finishPointLabel.Text = "Finish - (,)";
+            this.finishPointLabel.Text = "Finish - (a, b)";
             // 
             // algorithmTypeLabel
             // 
@@ -118,7 +118,7 @@ namespace MazeDemonstration
             this.algorithmTypeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
             this.algorithmTypeLabel.Location = new System.Drawing.Point(534, 62);
             this.algorithmTypeLabel.Name = "algorithmTypeLabel";
-            this.algorithmTypeLabel.Size = new System.Drawing.Size(191, 16);
+            this.algorithmTypeLabel.Size = new System.Drawing.Size(192, 16);
             this.algorithmTypeLabel.TabIndex = 13;
             this.algorithmTypeLabel.Text = "Pathfinding Algorithm Type - A*";
             // 
@@ -140,11 +140,13 @@ namespace MazeDemonstration
             this.exitSolver.Name = "exitSolver";
             this.exitSolver.Size = new System.Drawing.Size(73, 19);
             this.exitSolver.Text = "Exit Solver";
+            this.exitSolver.Click += new System.EventHandler(this.exitSolver_Click);
             // 
             // MazeSolverWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1184, 561);
             this.Controls.Add(this.algorithmTypeLabel);
             this.Controls.Add(this.finishPointLabel);

@@ -21,9 +21,17 @@ namespace MazeDemonstration
             picturebox = _picturebox;
             // Initialise Component
             InitializeComponent();
-            // Set up the current window with the maze not yet solved and other information.#
+            // Set up the current window with the maze not yet solved and other information.
             mazePictureBox.Size = picturebox.Size;
             mazePictureBox.Image = picturebox.Image;
+
+            dimensionsLabel.Text = $"Dimensions ({maze.dimensions[0]}, {maze.dimensions[1]})";
+            finishPointLabel.Text = $"Finish ({maze.dimensions[0]}, {maze.dimensions[1]})";
+        }
+
+        private void exitSolver_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }
