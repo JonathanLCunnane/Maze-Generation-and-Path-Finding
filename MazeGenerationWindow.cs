@@ -22,7 +22,6 @@ namespace MazeDemonstration
         int timeIntervalBetweenGenerationSteps = 25;
         int timerTick = 0;
         Brush bgColourBrush = new SolidBrush(DefaultBackColor);
-        PointF imageStartPoint = new PointF(15, 60);
         public MazeGeneratorSolverForm()
         {
             // Initialise the component

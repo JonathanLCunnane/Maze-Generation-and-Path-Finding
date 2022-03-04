@@ -262,6 +262,29 @@ namespace MazeDemonstration
         public static Bitmap GetMazeBitmap(Maze maze, Brush bgBrush)
         {
             Bitmap mazeBitmap = new Bitmap(maze.dimensions[0] * Consts.pixelsPerDimension + Consts.pictureBoxPaddingPixels, maze.dimensions[1] * Consts.pixelsPerDimension + Consts.pictureBoxPaddingPixels, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+            // If the maze is a default maze, i.e. first cell is not visited.
+            if (!maze.nodes[0, 0].Visited)
+            {
+                using (Graphics mazeBitmapGraphics = Graphics.FromImage(mazeBitmap))
+                {
+                    int rectangleX;
+                    int rectangleWidth = Consts.wallThickness;
+                    int rectangleHeight = Consts.pixelsPerDimension * maze.dimensions[1] + Consts.wallThickness * (maze.dimensions[1] - 2);
+                    int rectangleY = - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
+                    for (int x = 0; x <= maze.dimensions[0]; x++)
+                    {
+                        rectangleX = (x * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
+                        mazeBitmapGraphics.FillRectangle(Brushes.Black, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
+                    }
+                    rectangleX = rectangleY;
+                    for (int y = 0; y <= maze.dimensions[0]; y++)
+                    {
+                        rectangleY = (y * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
+                        mazeBitmapGraphics.FillRectangle(Brushes.Black, rectangleX, rectangleY, rectangleHeight, rectangleWidth);
+                    }
+                }
+                return mazeBitmap;
+            }
             using (Graphics mazeBitmapGraphics = Graphics.FromImage(mazeBitmap))
             {
                 mazeBitmapGraphics.FillRectangle(bgBrush, 0, 0, mazeBitmap.Width, mazeBitmap.Height);
