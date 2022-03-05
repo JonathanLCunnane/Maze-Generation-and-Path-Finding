@@ -23,7 +23,6 @@ namespace MazeDemonstration
         public int[] dimensions { get; }
         [ProtoIgnore]
         public MazeNode[,] nodes { get; set; }
-        
         [ProtoMember(2), Browsable(false), EditorBrowsable(EditorBrowsableState.Never)]
         private MazeNode[] nodesFlatten
         {
@@ -51,20 +50,25 @@ namespace MazeDemonstration
                 }
             }
         }
+        [ProtoMember(3)]
+        public bool generated { get; set; }
         public Maze()
         {
             dimensions = new int[2] { 3, 3 };
             nodes = InitialMaze(3, 3);
+            generated = false;
         }
         public Maze(int x, int y)
         {
             dimensions = new int[2] { x, y };
             nodes = InitialMaze(x, y);
+            generated = false;
         }
         public Maze(int x, int y, MazeNode[,] _nodes)
         {
             dimensions = new int[2] { x, y };
             nodes = _nodes;
+            generated = false;
         }
 
 
@@ -84,6 +88,7 @@ namespace MazeDemonstration
 
         public void GenerateUnstepped(Point start)
         {
+            generated = true;
             // Initialise variables
             Stack<Point> stack = new Stack<Point>();
             Random randGen = new Random();
@@ -172,6 +177,7 @@ namespace MazeDemonstration
 
         public IEnumerator<MazeDelta> StepGeneration(Point start)
         {
+            generated = true;
             // Initialise variables
             Stack<Point> stack = new Stack<Point>();
             Random randGen = new Random();
@@ -262,8 +268,8 @@ namespace MazeDemonstration
         public static Bitmap GetMazeBitmap(Maze maze, Brush bgBrush)
         {
             Bitmap mazeBitmap = new Bitmap(maze.dimensions[0] * Consts.pixelsPerDimension + Consts.pictureBoxPaddingPixels, maze.dimensions[1] * Consts.pixelsPerDimension + Consts.pictureBoxPaddingPixels, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
-            // If the maze is a default maze, i.e. first cell is not visited.
-            if (!maze.nodes[0, 0].Visited)
+            // If the maze is a default maze, i.e. not generated.
+            if (!maze.generated)
             {
                 using (Graphics mazeBitmapGraphics = Graphics.FromImage(mazeBitmap))
                 {
