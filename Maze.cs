@@ -269,18 +269,20 @@ namespace MazeDemonstration
                 {
                     int rectangleX;
                     int rectangleWidth = Consts.wallThickness;
-                    int rectangleHeight = Consts.pixelsPerDimension * maze.dimensions[1] + Consts.wallThickness * (maze.dimensions[1] - 2);
+                    int rectangleHeight = Consts.pixelsPerDimension * maze.dimensions[1] + Consts.wallThickness;
                     int rectangleY = - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
                     for (int x = 0; x <= maze.dimensions[0]; x++)
                     {
                         rectangleX = (x * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
                         mazeBitmapGraphics.FillRectangle(Brushes.Black, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
                     }
+                    rectangleWidth = Consts.pixelsPerDimension * maze.dimensions[0] + Consts.wallThickness;
+                    rectangleHeight = Consts.wallThickness;
                     rectangleX = rectangleY;
-                    for (int y = 0; y <= maze.dimensions[0]; y++)
+                    for (int y = 0; y <= maze.dimensions[1]; y++)
                     {
                         rectangleY = (y * Consts.pixelsPerDimension) - (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
-                        mazeBitmapGraphics.FillRectangle(Brushes.Black, rectangleX, rectangleY, rectangleHeight, rectangleWidth);
+                        mazeBitmapGraphics.FillRectangle(Brushes.Black, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
                     }
                 }
                 return mazeBitmap;
