@@ -40,6 +40,13 @@ namespace MazeDemonstration
             this.algorithmTypeLabel = new System.Windows.Forms.Label();
             this.MainMenu = new System.Windows.Forms.MenuStrip();
             this.exitSolver = new System.Windows.Forms.ToolStripMenuItem();
+            this.setFinish = new System.Windows.Forms.ToolStripMenuItem();
+            this.setStart = new System.Windows.Forms.ToolStripMenuItem();
+            this.setPathfindingAlgorithmTypeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.setPathfindingAlgorithmAStar = new System.Windows.Forms.ToolStripMenuItem();
+            this.setPathfindingAlgorithmDFS = new System.Windows.Forms.ToolStripMenuItem();
+            this.setPathfindingAlgorithmBFS = new System.Windows.Forms.ToolStripMenuItem();
+            this.setPathfindingAlgorithmDijkstra = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.mazePictureBox)).BeginInit();
             this.MainMenu.SuspendLayout();
             this.SuspendLayout();
@@ -126,7 +133,10 @@ namespace MazeDemonstration
             // 
             this.MainMenu.BackColor = System.Drawing.SystemColors.Window;
             this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.exitSolver});
+            this.exitSolver,
+            this.setStart,
+            this.setFinish,
+            this.setPathfindingAlgorithmTypeToolStripMenuItem});
             this.MainMenu.Location = new System.Drawing.Point(0, 0);
             this.MainMenu.Name = "MainMenu";
             this.MainMenu.Size = new System.Drawing.Size(1184, 25);
@@ -141,6 +151,61 @@ namespace MazeDemonstration
             this.exitSolver.Size = new System.Drawing.Size(73, 19);
             this.exitSolver.Text = "Exit Solver";
             this.exitSolver.Click += new System.EventHandler(this.exitSolver_Click);
+            // 
+            // setFinish
+            // 
+            this.setFinish.BackColor = System.Drawing.SystemColors.MenuBar;
+            this.setFinish.Margin = new System.Windows.Forms.Padding(1);
+            this.setFinish.Name = "setFinish";
+            this.setFinish.Size = new System.Drawing.Size(69, 19);
+            this.setFinish.Text = "Set Finish";
+            this.setFinish.Click += new System.EventHandler(this.setFinish_Click);
+            // 
+            // setStart
+            // 
+            this.setStart.BackColor = System.Drawing.SystemColors.MenuBar;
+            this.setStart.Margin = new System.Windows.Forms.Padding(1);
+            this.setStart.Name = "setStart";
+            this.setStart.Size = new System.Drawing.Size(62, 19);
+            this.setStart.Text = "Set Start";
+            this.setStart.Click += new System.EventHandler(this.setStart_Click);
+            // 
+            // setPathfindingAlgorithmTypeToolStripMenuItem
+            // 
+            this.setPathfindingAlgorithmTypeToolStripMenuItem.BackColor = System.Drawing.SystemColors.Control;
+            this.setPathfindingAlgorithmTypeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.setPathfindingAlgorithmAStar,
+            this.setPathfindingAlgorithmBFS,
+            this.setPathfindingAlgorithmDijkstra,
+            this.setPathfindingAlgorithmDFS});
+            this.setPathfindingAlgorithmTypeToolStripMenuItem.Margin = new System.Windows.Forms.Padding(1);
+            this.setPathfindingAlgorithmTypeToolStripMenuItem.Name = "setPathfindingAlgorithmTypeToolStripMenuItem";
+            this.setPathfindingAlgorithmTypeToolStripMenuItem.Size = new System.Drawing.Size(184, 19);
+            this.setPathfindingAlgorithmTypeToolStripMenuItem.Text = "Set Pathfinding Algorithm Type";
+            // 
+            // setPathfindingAlgorithmAStar
+            // 
+            this.setPathfindingAlgorithmAStar.Name = "setPathfindingAlgorithmAStar";
+            this.setPathfindingAlgorithmAStar.Size = new System.Drawing.Size(180, 22);
+            this.setPathfindingAlgorithmAStar.Text = "A*";
+            // 
+            // setPathfindingAlgorithmDFS
+            // 
+            this.setPathfindingAlgorithmDFS.Name = "setPathfindingAlgorithmDFS";
+            this.setPathfindingAlgorithmDFS.Size = new System.Drawing.Size(180, 22);
+            this.setPathfindingAlgorithmDFS.Text = "DFS";
+            // 
+            // setPathfindingAlgorithmBFS
+            // 
+            this.setPathfindingAlgorithmBFS.Name = "setPathfindingAlgorithmBFS";
+            this.setPathfindingAlgorithmBFS.Size = new System.Drawing.Size(180, 22);
+            this.setPathfindingAlgorithmBFS.Text = "BFS";
+            // 
+            // setPathfindingAlgorithmDijkstra
+            // 
+            this.setPathfindingAlgorithmDijkstra.Name = "setPathfindingAlgorithmDijkstra";
+            this.setPathfindingAlgorithmDijkstra.Size = new System.Drawing.Size(180, 22);
+            this.setPathfindingAlgorithmDijkstra.Text = "Dijkstra";
             // 
             // MazeSolverWindow
             // 
@@ -181,5 +246,12 @@ namespace MazeDemonstration
         private System.Windows.Forms.Label algorithmTypeLabel;
         private System.Windows.Forms.MenuStrip MainMenu;
         private System.Windows.Forms.ToolStripMenuItem exitSolver;
+        private System.Windows.Forms.ToolStripMenuItem setStart;
+        private System.Windows.Forms.ToolStripMenuItem setFinish;
+        private System.Windows.Forms.ToolStripMenuItem setPathfindingAlgorithmTypeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem setPathfindingAlgorithmAStar;
+        private System.Windows.Forms.ToolStripMenuItem setPathfindingAlgorithmBFS;
+        private System.Windows.Forms.ToolStripMenuItem setPathfindingAlgorithmDijkstra;
+        private System.Windows.Forms.ToolStripMenuItem setPathfindingAlgorithmDFS;
     }
 }
