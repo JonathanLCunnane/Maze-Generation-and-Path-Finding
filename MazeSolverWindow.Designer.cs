@@ -29,6 +29,7 @@ namespace MazeDemonstration
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MazeSolverWindow));
             this.instantCheckBox = new System.Windows.Forms.CheckBox();
             this.timeIntervalLabel = new System.Windows.Forms.Label();
@@ -47,8 +48,9 @@ namespace MazeDemonstration
             this.setPathfindingAlgorithmBFS = new System.Windows.Forms.ToolStripMenuItem();
             this.setPathfindingAlgorithmDijkstra = new System.Windows.Forms.ToolStripMenuItem();
             this.setPathfindingAlgorithmDFS = new System.Windows.Forms.ToolStripMenuItem();
-            this.startSolver = new System.Windows.Forms.ToolStripMenuItem();
             this.timeInterval = new System.Windows.Forms.ToolStripMenuItem();
+            this.startSolver = new System.Windows.Forms.ToolStripMenuItem();
+            this.mazeSolvingStepTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.mazePictureBox)).BeginInit();
             this.MainMenu.SuspendLayout();
             this.SuspendLayout();
@@ -62,6 +64,7 @@ namespace MazeDemonstration
             this.instantCheckBox.TabIndex = 10;
             this.instantCheckBox.Text = "No Interval";
             this.instantCheckBox.UseVisualStyleBackColor = true;
+            this.instantCheckBox.CheckedChanged += new System.EventHandler(this.instantCheckBox_CheckedChanged);
             // 
             // timeIntervalLabel
             // 
@@ -69,7 +72,7 @@ namespace MazeDemonstration
             this.timeIntervalLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
             this.timeIntervalLabel.Location = new System.Drawing.Point(126, 60);
             this.timeIntervalLabel.Name = "timeIntervalLabel";
-            this.timeIntervalLabel.Size = new System.Drawing.Size(185, 16);
+            this.timeIntervalLabel.Size = new System.Drawing.Size(186, 16);
             this.timeIntervalLabel.TabIndex = 9;
             this.timeIntervalLabel.Text = "Interval Between Steps - 25ms";
             // 
@@ -79,7 +82,7 @@ namespace MazeDemonstration
             this.dimensionsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
             this.dimensionsLabel.Location = new System.Drawing.Point(126, 33);
             this.dimensionsLabel.Name = "dimensionsLabel";
-            this.dimensionsLabel.Size = new System.Drawing.Size(115, 16);
+            this.dimensionsLabel.Size = new System.Drawing.Size(116, 16);
             this.dimensionsLabel.TabIndex = 8;
             this.dimensionsLabel.Text = "Dimensions - (x, y)";
             // 
@@ -89,7 +92,7 @@ namespace MazeDemonstration
             this.currentSettingsPlaceholder.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
             this.currentSettingsPlaceholder.Location = new System.Drawing.Point(13, 33);
             this.currentSettingsPlaceholder.Name = "currentSettingsPlaceholder";
-            this.currentSettingsPlaceholder.Size = new System.Drawing.Size(106, 16);
+            this.currentSettingsPlaceholder.Size = new System.Drawing.Size(107, 16);
             this.currentSettingsPlaceholder.TabIndex = 7;
             this.currentSettingsPlaceholder.Text = "Current Settings: ";
             // 
@@ -107,7 +110,7 @@ namespace MazeDemonstration
             this.startPointLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
             this.startPointLabel.Location = new System.Drawing.Point(336, 33);
             this.startPointLabel.Name = "startPointLabel";
-            this.startPointLabel.Size = new System.Drawing.Size(72, 16);
+            this.startPointLabel.Size = new System.Drawing.Size(73, 16);
             this.startPointLabel.TabIndex = 11;
             this.startPointLabel.Text = "Start - (0, 0)";
             // 
@@ -117,7 +120,7 @@ namespace MazeDemonstration
             this.finishPointLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
             this.finishPointLabel.Location = new System.Drawing.Point(534, 34);
             this.finishPointLabel.Name = "finishPointLabel";
-            this.finishPointLabel.Size = new System.Drawing.Size(82, 16);
+            this.finishPointLabel.Size = new System.Drawing.Size(83, 16);
             this.finishPointLabel.TabIndex = 12;
             this.finishPointLabel.Text = "Finish - (a, b)";
             // 
@@ -127,7 +130,7 @@ namespace MazeDemonstration
             this.algorithmTypeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
             this.algorithmTypeLabel.Location = new System.Drawing.Point(534, 62);
             this.algorithmTypeLabel.Name = "algorithmTypeLabel";
-            this.algorithmTypeLabel.Size = new System.Drawing.Size(191, 16);
+            this.algorithmTypeLabel.Size = new System.Drawing.Size(192, 16);
             this.algorithmTypeLabel.TabIndex = 13;
             this.algorithmTypeLabel.Text = "Pathfinding Algorithm Type - A*";
             // 
@@ -190,30 +193,39 @@ namespace MazeDemonstration
             // setPathfindingAlgorithmAStar
             // 
             this.setPathfindingAlgorithmAStar.Name = "setPathfindingAlgorithmAStar";
-            this.setPathfindingAlgorithmAStar.Size = new System.Drawing.Size(180, 22);
+            this.setPathfindingAlgorithmAStar.Size = new System.Drawing.Size(113, 22);
             this.setPathfindingAlgorithmAStar.Text = "A*";
             this.setPathfindingAlgorithmAStar.Click += new System.EventHandler(this.setPathfindingAlgorithmAStar_Click);
             // 
             // setPathfindingAlgorithmBFS
             // 
             this.setPathfindingAlgorithmBFS.Name = "setPathfindingAlgorithmBFS";
-            this.setPathfindingAlgorithmBFS.Size = new System.Drawing.Size(180, 22);
+            this.setPathfindingAlgorithmBFS.Size = new System.Drawing.Size(113, 22);
             this.setPathfindingAlgorithmBFS.Text = "BFS";
             this.setPathfindingAlgorithmBFS.Click += new System.EventHandler(this.setPathfindingAlgorithmBFS_Click);
             // 
             // setPathfindingAlgorithmDijkstra
             // 
             this.setPathfindingAlgorithmDijkstra.Name = "setPathfindingAlgorithmDijkstra";
-            this.setPathfindingAlgorithmDijkstra.Size = new System.Drawing.Size(180, 22);
+            this.setPathfindingAlgorithmDijkstra.Size = new System.Drawing.Size(113, 22);
             this.setPathfindingAlgorithmDijkstra.Text = "Dijkstra";
             this.setPathfindingAlgorithmDijkstra.Click += new System.EventHandler(this.setPathfindingAlgorithmDijkstra_Click);
             // 
             // setPathfindingAlgorithmDFS
             // 
             this.setPathfindingAlgorithmDFS.Name = "setPathfindingAlgorithmDFS";
-            this.setPathfindingAlgorithmDFS.Size = new System.Drawing.Size(180, 22);
+            this.setPathfindingAlgorithmDFS.Size = new System.Drawing.Size(113, 22);
             this.setPathfindingAlgorithmDFS.Text = "DFS";
             this.setPathfindingAlgorithmDFS.Click += new System.EventHandler(this.setPathfindingAlgorithmDFS_Click);
+            // 
+            // timeInterval
+            // 
+            this.timeInterval.BackColor = System.Drawing.SystemColors.MenuBar;
+            this.timeInterval.Margin = new System.Windows.Forms.Padding(1);
+            this.timeInterval.Name = "timeInterval";
+            this.timeInterval.Size = new System.Drawing.Size(87, 19);
+            this.timeInterval.Text = "Time Interval";
+            this.timeInterval.Click += new System.EventHandler(this.timeInterval_Click);
             // 
             // startSolver
             // 
@@ -224,14 +236,10 @@ namespace MazeDemonstration
             this.startSolver.Text = "Start Solver";
             this.startSolver.Click += new System.EventHandler(this.startSolver_Click);
             // 
-            // timeInterval
+            // mazeSolvingStepTimer
             // 
-            this.timeInterval.BackColor = System.Drawing.SystemColors.MenuBar;
-            this.timeInterval.Margin = new System.Windows.Forms.Padding(1);
-            this.timeInterval.Name = "timeInterval";
-            this.timeInterval.Size = new System.Drawing.Size(87, 19);
-            this.timeInterval.Text = "Time Interval";
-            this.timeInterval.Click += new System.EventHandler(this.timeInterval_Click);
+            this.mazeSolvingStepTimer.Interval = 25;
+            this.mazeSolvingStepTimer.Tick += new System.EventHandler(this.mazeSolvingStepTimer_Tick);
             // 
             // MazeSolverWindow
             // 
@@ -281,5 +289,6 @@ namespace MazeDemonstration
         private System.Windows.Forms.ToolStripMenuItem setPathfindingAlgorithmDFS;
         private System.Windows.Forms.ToolStripMenuItem startSolver;
         private System.Windows.Forms.ToolStripMenuItem timeInterval;
+        private System.Windows.Forms.Timer mazeSolvingStepTimer;
     }
 }

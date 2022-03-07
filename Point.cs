@@ -41,7 +41,15 @@ namespace MazeDemonstration
                 return false;
             }
             Point point = (Point)obj;
-            return point.x == x & point.y == y;
+            return point.x == x && point.y == y;
+        }
+        public override int GetHashCode()
+        {
+            if (this == null)
+            {
+                throw new ArgumentNullException(ToString(), "The Point was `null`.");
+            }
+            return $"{this.x}, {this.y}".GetHashCode();
         }
     }
 }

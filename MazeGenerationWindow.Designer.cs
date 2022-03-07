@@ -162,7 +162,7 @@ namespace MazeDemonstration
             this.currentSettingsPlaceholder.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
             this.currentSettingsPlaceholder.Location = new System.Drawing.Point(12, 34);
             this.currentSettingsPlaceholder.Name = "currentSettingsPlaceholder";
-            this.currentSettingsPlaceholder.Size = new System.Drawing.Size(106, 16);
+            this.currentSettingsPlaceholder.Size = new System.Drawing.Size(107, 16);
             this.currentSettingsPlaceholder.TabIndex = 2;
             this.currentSettingsPlaceholder.Text = "Current Settings: ";
             // 
@@ -172,7 +172,7 @@ namespace MazeDemonstration
             this.dimensionsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
             this.dimensionsLabel.Location = new System.Drawing.Point(125, 34);
             this.dimensionsLabel.Name = "dimensionsLabel";
-            this.dimensionsLabel.Size = new System.Drawing.Size(116, 16);
+            this.dimensionsLabel.Size = new System.Drawing.Size(117, 16);
             this.dimensionsLabel.TabIndex = 3;
             this.dimensionsLabel.Text = "Dimensions - (3, 3)";
             // 
@@ -182,13 +182,13 @@ namespace MazeDemonstration
             this.timeIntervalLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.5F);
             this.timeIntervalLabel.Location = new System.Drawing.Point(327, 34);
             this.timeIntervalLabel.Name = "timeIntervalLabel";
-            this.timeIntervalLabel.Size = new System.Drawing.Size(185, 16);
+            this.timeIntervalLabel.Size = new System.Drawing.Size(186, 16);
             this.timeIntervalLabel.TabIndex = 4;
             this.timeIntervalLabel.Text = "Interval Between Steps - 25ms";
             // 
             // mazeGenerationStepTimer
             // 
-            this.mazeGenerationStepTimer.Interval = 250;
+            this.mazeGenerationStepTimer.Interval = 25;
             this.mazeGenerationStepTimer.Tick += new System.EventHandler(this.mazeGenerationStepTimer_Tick);
             // 
             // instantCheckBox

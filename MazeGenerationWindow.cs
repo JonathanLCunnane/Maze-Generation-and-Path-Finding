@@ -121,7 +121,7 @@ namespace MazeDemonstration
             if (instantCheckBox.Checked)
             {
                 TimeInterval.Available = false;
-                timeIntervalLabel.Text = $"Interval Between Steps - None";
+                timeIntervalLabel.Text = "Interval Between Steps - None";
                 return;
             }
             TimeInterval.Available = true;

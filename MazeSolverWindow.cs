@@ -117,14 +117,38 @@ namespace MazeDemonstration
             switch (algorithmTypeLabel.Tag)
             {
                 case "A*":
-                    if (timeIntervalLabel.Text == "")
+                    // If instant generation not required.
+                    if (!instantCheckBox.Checked)
                     {
                         break;
                     }
+                    // Else instant generation
                     break;
                 case "BFS":
+                    // If instant generation not required.
+                    if (!instantCheckBox.Checked)
+                    {
+                        mazeSolvingStepTimer.Tag = MazeSolving.BFS(maze, (Point)startPointLabel.Tag, (Point)finishPointLabel.Tag, currBitmap);
+                        mazeSolvingStepTimer.Start();
+                        break;
+                    }
+                    // Else instant generation
+                    break;
                 case "Dijkstra":
+                    // If instant generation not required.
+                    if (!instantCheckBox.Checked)
+                    {
+                        break;
+                    }
+                    // Else instant generation
+                    break;
                 case "DFS":
+                    // If instant generation not required.
+                    if (!instantCheckBox.Checked)
+                    {
+                        break;
+                    }
+                    // Else instant generation
                     break;
             }
         }
@@ -136,10 +160,45 @@ namespace MazeDemonstration
             // If 'Set Time Interval' was clicked, set the time interval to whatever was on the track bar.
             if (dialogueResult == DialogResult.OK)
             {
+                mazeSolvingStepTimer.Interval = timeIntervalDialogue.timeInterval;
                 timeIntervalLabel.Tag = timeIntervalDialogue.timeInterval;
                 timeIntervalLabel.Text = $"Interval Between Steps - {timeIntervalDialogue.timeInterval}ms";
             }
             // If 'Cancel' was clicked, do nothing
+        }
+
+        private void instantCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (instantCheckBox.Checked)
+            {
+                timeInterval.Available = false;
+                timeIntervalLabel.Text = "Interval Between Steps - None";
+                return;
+            }
+            timeInterval.Available = true;
+            timeIntervalLabel.Text = $"Interval Between Steps - {(int)timeIntervalLabel.Tag}ms";
+        }
+
+        private void mazeSolvingStepTimer_Tick(object sender, EventArgs e)
+        {
+            // If the tag is an iterator, iterate over the bitmaps within that iterator.
+            if (mazeSolvingStepTimer.Tag is IEnumerator<Bitmap>)
+            {
+                // If there are Bitmaps left then display them, otherwise stop the timer
+                if (((IEnumerator<Bitmap>)mazeSolvingStepTimer.Tag).MoveNext())
+                {
+                    mazePictureBox.Image = ((IEnumerator<Bitmap>)mazeSolvingStepTimer.Tag).Current;
+                }
+                else
+                {
+                    mazeSolvingStepTimer.Stop();
+                    ((IEnumerator<Bitmap>)mazeSolvingStepTimer.Tag).Dispose();
+                }
+            }
+            else
+            {
+                mazePictureBox.Image = (Bitmap)mazeSolvingStepTimer.Tag;
+            }
         }
     }
 }

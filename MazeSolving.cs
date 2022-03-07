@@ -11,62 +11,55 @@ namespace MazeDemonstration
     {
         static Brush startColour = new SolidBrush(Color.FromArgb(0, 176, 80));
         static Brush finishColour = new SolidBrush(Color.FromArgb(255, 0, 0));
-        public static Bitmap changeStartPoint(Bitmap mazeBitmap, Point oldStart, Point newStart, Brush bgColour)
+        static Brush currPointColour = new SolidBrush(Color.FromArgb(5, 100, 5));
+        static Brush nextPointColour = new SolidBrush(Color.FromArgb(190, 70, 10));
+        static Brush pathColour = new SolidBrush(Color.FromArgb(45, 15, 115));
+        private static Bitmap drawSquare(Bitmap originalBitmap, Point point, Brush colour)
         {
-            using (Graphics bitmapGraphics = Graphics.FromImage(mazeBitmap))
+            using (Graphics bitmapGraphics = Graphics.FromImage(originalBitmap))
             {
-                int rectangleX;
-                int rectangleY;
+                int rectangleX = point.x * Consts.pixelsPerDimension + (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
+                int rectangleY = point.y * Consts.pixelsPerDimension + (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
                 int rectangleWidth = Consts.pixelsPerDimension - Consts.wallThickness;
                 int rectangleHeight = Consts.pixelsPerDimension - Consts.wallThickness;
-                // Remove Old if prev not null.
-                if (oldStart != null)
-                {
-                    rectangleX = oldStart.x * Consts.pixelsPerDimension + (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
-                    rectangleY = oldStart.y * Consts.pixelsPerDimension + (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
-                    bitmapGraphics.FillRectangle(bgColour, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
-                }
-                // Add New.
-                rectangleX = newStart.x * Consts.pixelsPerDimension + (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
-                rectangleY = newStart.y * Consts.pixelsPerDimension + (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
-                bitmapGraphics.FillRectangle(startColour, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
+                bitmapGraphics.FillRectangle(colour, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
             }
+            return originalBitmap;
+        }
+        public static Bitmap changeStartPoint(Bitmap mazeBitmap, Point oldStart, Point newStart, Brush bgColour)
+        {
+            // Remove Old if prev not null.
+            if (oldStart != null)
+            {
+                mazeBitmap = drawSquare(mazeBitmap, oldStart, bgColour);
+            }
+            // Add New.
+            mazeBitmap = drawSquare(mazeBitmap, newStart, startColour);
             return mazeBitmap;
         }
         public static Bitmap changeFinishPoint(Bitmap mazeBitmap, Point oldStart, Point newStart, Brush bgColour)
         {
-            using (Graphics bitmapGraphics = Graphics.FromImage(mazeBitmap))
+            // Remove Old if prev not null.
+            if (oldStart != null)
             {
-                int rectangleX;
-                int rectangleY;
-                int rectangleWidth = Consts.pixelsPerDimension - Consts.wallThickness;
-                int rectangleHeight = Consts.pixelsPerDimension - Consts.wallThickness;
-                // Remove Old if prev not null.
-                if (oldStart != null)
-                {
-                    rectangleX = oldStart.x * Consts.pixelsPerDimension + (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
-                    rectangleY = oldStart.y * Consts.pixelsPerDimension + (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
-                    bitmapGraphics.FillRectangle(bgColour, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
-                }
-                // Add New.
-                rectangleX = newStart.x * Consts.pixelsPerDimension + (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
-                rectangleY = newStart.y * Consts.pixelsPerDimension + (Consts.wallThickness / 2) + (Consts.pictureBoxPaddingPixels / 2);
-                bitmapGraphics.FillRectangle(finishColour, rectangleX, rectangleY, rectangleWidth, rectangleHeight);
+                mazeBitmap = drawSquare(mazeBitmap, oldStart, bgColour);
             }
+            // Add New.
+            mazeBitmap = drawSquare(mazeBitmap, newStart, finishColour);
             return mazeBitmap;
         }
-        
-        public static IEnumerable<Bitmap> iterativeBacktrace(Point start, Point finish, Dictionary<Point, Point> parent)
+        private static IEnumerable<Bitmap> iterativeBacktrace(Point start, Point finish, Dictionary<Point, Point> parent, Bitmap bitmap)
         {
             List<Point> path = new List<Point>() { finish };
-            while (path.Last() != start)
+            while (!parent[path.Last()].Equals(start))
             {
                 path.Add(parent[path.Last()]);
                 // Create and yield new bitmap.
-                yield return new Bitmap(1, 1);
+                bitmap = drawSquare(bitmap, path.Last(), pathColour);
+                yield return bitmap;
             }
         }
-        public static IEnumerable<Bitmap> BFS(Maze maze, Point start, Point finish)
+        public static IEnumerator<Bitmap> BFS(Maze maze, Point start, Point finish, Bitmap originalBitmap)
         {
             // Firstly reset all of the mazes nodes to not being visited
             maze.unvisitAll();
@@ -74,15 +67,25 @@ namespace MazeDemonstration
             Dictionary<Point, Point> parent = new Dictionary<Point, Point>();
             Queue<Point> queue = new Queue<Point>();
             queue.Enqueue(start);
+
+            // Set start to being visited
+            maze.nodes[start.x, start.y].Visited = true;
             while (queue.Count > 0)
             {
+                // Set current point and draw onto bitmap if it is not the start or finish
                 Point currPoint = queue.Dequeue();
-                if (currPoint == finish)
+                if (!currPoint.Equals(start))
                 {
-                    foreach (Bitmap step in iterativeBacktrace(start, finish, parent))
+                    originalBitmap = drawSquare(originalBitmap, currPoint, currPointColour);
+                }
+                if (currPoint.Equals(finish))
+                {
+                    originalBitmap = drawSquare(originalBitmap, currPoint, finishColour);
+                    foreach (Bitmap step in iterativeBacktrace(start, finish, parent, originalBitmap))
                     {
                         yield return step;
                     }
+                    yield break;
                 }
                 // Check if you can go in any direction
                 if (currPoint.y != 0) // North
@@ -96,6 +99,10 @@ namespace MazeDemonstration
 
                         // Record the parent for recursion
                         parent.Add(newPoint, currPoint);
+
+                        // Draw to be visited square
+                        originalBitmap = drawSquare(originalBitmap, newPoint, nextPointColour);
+                        yield return originalBitmap;
                     }
                 }
                 if (currPoint.x != maze.dimensions[0] - 1) // East
@@ -109,6 +116,10 @@ namespace MazeDemonstration
 
                         // Record the parent for recursion
                         parent.Add(newPoint, currPoint);
+
+                        // Draw to be visited square
+                        originalBitmap = drawSquare(originalBitmap, newPoint, nextPointColour);
+                        yield return originalBitmap;
                     }
                 }
                 if (currPoint.y != maze.dimensions[1] - 1) // South
@@ -122,6 +133,10 @@ namespace MazeDemonstration
 
                         // Record the parent for recursion
                         parent.Add(newPoint, currPoint);
+
+                        // Draw to be visited square
+                        originalBitmap = drawSquare(originalBitmap, newPoint, nextPointColour);
+                        yield return originalBitmap;
                     }
                 }
                 if (currPoint.x != 0) // West
@@ -135,11 +150,13 @@ namespace MazeDemonstration
 
                         // Record the parent for recursion
                         parent.Add(newPoint, currPoint);
+
+                        // Draw to be visited square
+                        originalBitmap = drawSquare(originalBitmap, newPoint, nextPointColour);
+                        yield return originalBitmap;
                     }
                 }
             }
-
-            yield return new Bitmap(1, 1);
         }
     }
 }
