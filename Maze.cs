@@ -402,6 +402,13 @@ namespace MazeDemonstration
                     break;
             }
         }
+        public void unvisitAll()
+        {
+            foreach(MazeNode node in nodes)
+            {
+                node.Visited = false;
+            }
+        }
         /*
         private Maze Copy()
         {

@@ -34,6 +34,9 @@ namespace MazeDemonstration
             dimensionsLabel.Text = $"Dimensions - ({maze.dimensions[0]}, {maze.dimensions[1]})";
             finishPointLabel.Text = $"Finish - ({maze.dimensions[0] - 1}, {maze.dimensions[1] - 1})";
 
+            algorithmTypeLabel.Tag = "A*";
+            timeIntervalLabel.Tag = 25;
+
             // Draw Initial start and finish
             mazePictureBox.Image = MazeSolving.changeStartPoint(currBitmap, null, (Point)startPointLabel.Tag, bgBrush);
             mazePictureBox.Image = MazeSolving.changeFinishPoint(currBitmap, null, (Point)finishPointLabel.Tag, bgBrush);
@@ -78,6 +81,65 @@ namespace MazeDemonstration
                 // Set location of start on the maze.
                 mazePictureBox.Image = MazeSolving.changeFinishPoint(currBitmap, prev, next, bgBrush);
             }
+        }
+
+        private void setPathfindingAlgorithmAStar_Click(object sender, EventArgs e)
+        {
+            // Change the pathfinding algorithm label and tag first.
+            algorithmTypeLabel.Text = "Pathfinding Algorithm Type - A*";
+            algorithmTypeLabel.Tag = "A*";
+        }
+
+        private void setPathfindingAlgorithmBFS_Click(object sender, EventArgs e)
+        {
+            // Change the pathfinding algorithm label and tag first.
+            algorithmTypeLabel.Text = "Pathfinding Algorithm Type - BFS";
+            algorithmTypeLabel.Tag = "BFS";
+        }
+
+        private void setPathfindingAlgorithmDijkstra_Click(object sender, EventArgs e)
+        {
+            // Change the pathfinding algorithm label and tag first.
+            algorithmTypeLabel.Text = "Pathfinding Algorithm Type - Dijkstra";
+            algorithmTypeLabel.Tag = "Dijkstra";
+        }
+
+        private void setPathfindingAlgorithmDFS_Click(object sender, EventArgs e)
+        {
+            // Change the pathfinding algorithm label and tag first.
+            algorithmTypeLabel.Text = "Pathfinding Algorithm Type - DFS";
+            algorithmTypeLabel.Tag = "DFS";
+        }
+
+        private void startSolver_Click(object sender, EventArgs e)
+        {
+            // Carry out the correct algorithm based on the algorithm currently selected.
+            switch (algorithmTypeLabel.Tag)
+            {
+                case "A*":
+                    if (timeIntervalLabel.Text == "")
+                    {
+                        break;
+                    }
+                    break;
+                case "BFS":
+                case "Dijkstra":
+                case "DFS":
+                    break;
+            }
+        }
+
+        private void timeInterval_Click(object sender, EventArgs e)
+        {
+            TimeIntervalDialogue timeIntervalDialogue = new TimeIntervalDialogue((int)timeIntervalLabel.Tag);
+            DialogResult dialogueResult = timeIntervalDialogue.ShowDialog();
+            // If 'Set Time Interval' was clicked, set the time interval to whatever was on the track bar.
+            if (dialogueResult == DialogResult.OK)
+            {
+                timeIntervalLabel.Tag = timeIntervalDialogue.timeInterval;
+                timeIntervalLabel.Text = $"Interval Between Steps - {timeIntervalDialogue.timeInterval}ms";
+            }
+            // If 'Cancel' was clicked, do nothing
         }
     }
 }
