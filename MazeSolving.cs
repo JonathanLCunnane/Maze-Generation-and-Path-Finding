@@ -11,9 +11,9 @@ namespace MazeDemonstration
     {
         static Brush startColour = new SolidBrush(Color.FromArgb(0, 176, 80));
         static Brush finishColour = new SolidBrush(Color.FromArgb(255, 0, 0));
-        static Brush currPointColour = new SolidBrush(Color.FromArgb(5, 100, 5));
-        static Brush nextPointColour = new SolidBrush(Color.FromArgb(190, 70, 10));
-        static Brush pathColour = new SolidBrush(Color.FromArgb(45, 15, 115));
+        static Brush currPointColour = new SolidBrush(Color.FromArgb(170, 160, 250));
+        static Brush nextPointColour = new SolidBrush(Color.FromArgb(250, 130, 210));
+        static Brush pathColour = new SolidBrush(Color.FromArgb(250, 220, 100));
         private static Bitmap drawSquare(Bitmap originalBitmap, Point point, Brush colour)
         {
             using (Graphics bitmapGraphics = Graphics.FromImage(originalBitmap))
