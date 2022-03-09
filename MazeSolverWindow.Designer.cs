@@ -51,6 +51,7 @@ namespace MazeDemonstration
             this.timeInterval = new System.Windows.Forms.ToolStripMenuItem();
             this.startSolver = new System.Windows.Forms.ToolStripMenuItem();
             this.mazeSolvingStepTimer = new System.Windows.Forms.Timer(this.components);
+            this.saveImage = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.mazePictureBox)).BeginInit();
             this.MainMenu.SuspendLayout();
             this.SuspendLayout();
@@ -139,6 +140,7 @@ namespace MazeDemonstration
             this.MainMenu.BackColor = System.Drawing.SystemColors.Window;
             this.MainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.exitSolver,
+            this.saveImage,
             this.setStart,
             this.setFinish,
             this.setPathfindingAlgorithmTypeToolStripMenuItem,
@@ -241,6 +243,15 @@ namespace MazeDemonstration
             this.mazeSolvingStepTimer.Interval = 25;
             this.mazeSolvingStepTimer.Tick += new System.EventHandler(this.mazeSolvingStepTimer_Tick);
             // 
+            // saveImage
+            // 
+            this.saveImage.BackColor = System.Drawing.SystemColors.Control;
+            this.saveImage.Margin = new System.Windows.Forms.Padding(1);
+            this.saveImage.Name = "saveImage";
+            this.saveImage.Size = new System.Drawing.Size(79, 19);
+            this.saveImage.Text = "Save Image";
+            this.saveImage.Click += new System.EventHandler(this.saveImage_Click);
+            // 
             // MazeSolverWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -290,5 +301,6 @@ namespace MazeDemonstration
         private System.Windows.Forms.ToolStripMenuItem startSolver;
         private System.Windows.Forms.ToolStripMenuItem timeInterval;
         private System.Windows.Forms.Timer mazeSolvingStepTimer;
+        private System.Windows.Forms.ToolStripMenuItem saveImage;
     }
 }

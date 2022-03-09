@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
+using System.Drawing.Imaging;
+using System.Linq;  
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace MazeDemonstration
 {
@@ -21,7 +23,7 @@ namespace MazeDemonstration
             // Get previous maze and bitmap
             maze = _maze;
             picturebox = _picturebox;
-            currBitmap = (Bitmap)_picturebox.Image;
+            currBitmap = new Bitmap ((Bitmap)_picturebox.Image);
             // Initialise Component
             InitializeComponent();
             // Set Tags to default values
@@ -128,11 +130,14 @@ namespace MazeDemonstration
                     // If instant generation not required.
                     if (!instantCheckBox.Checked)
                     {
-                        mazeSolvingStepTimer.Tag = MazeSolving.BFS(maze, (Point)startPointLabel.Tag, (Point)finishPointLabel.Tag, currBitmap);
-                        mazeSolvingStepTimer.Start();
-                        break;
+                        mazeSolvingStepTimer.Tag = MazeSolving.BFSInterval(maze, (Point)startPointLabel.Tag, (Point)finishPointLabel.Tag, currBitmap);
                     }
                     // Else instant generation
+                    else
+                    {
+                        mazeSolvingStepTimer.Tag = MazeSolving.BFSNoInterval(maze, (Point)startPointLabel.Tag, (Point)finishPointLabel.Tag, currBitmap);
+                    }
+                    mazeSolvingStepTimer.Start();
                     break;
                 case "Dijkstra":
                     // If instant generation not required.
@@ -197,7 +202,36 @@ namespace MazeDemonstration
             }
             else
             {
-                mazePictureBox.Image = (Bitmap)mazeSolvingStepTimer.Tag;
+                mazePictureBox.Image = new Bitmap ((Bitmap)mazeSolvingStepTimer.Tag);
+                mazeSolvingStepTimer.Stop();
+                ((Bitmap)mazeSolvingStepTimer.Tag).Dispose();
+            }
+        }
+
+        private void saveImage_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialogue = new SaveFileDialog();
+            saveFileDialogue.Filter = "Images|*.png;*.bmp;*.jpg;*.jpeg";
+            saveFileDialogue.RestoreDirectory = true;
+            DialogResult dialogResult = saveFileDialogue.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+            {
+                string fileEXT = Path.GetExtension(saveFileDialogue.FileName);
+                ImageFormat format;
+                switch (fileEXT)
+                {
+                    case ".jpg":
+                    case ".jpeg":
+                        format = ImageFormat.Jpeg;
+                        break;
+                    case ".bmp":
+                        format = ImageFormat.Bmp;
+                        break;
+                    default:
+                        format = ImageFormat.Png;
+                        break;
+                }
+                mazePictureBox.Image.Save(saveFileDialogue.FileName, format);
             }
         }
     }
