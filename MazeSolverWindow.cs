@@ -137,7 +137,6 @@ namespace MazeDemonstration
                     {
                         mazeSolvingStepTimer.Tag = MazeSolving.BFSNoInterval(maze, (Point)startPointLabel.Tag, (Point)finishPointLabel.Tag, currBitmap);
                     }
-                    mazeSolvingStepTimer.Start();
                     break;
                 case "Dijkstra":
                     // If instant generation not required.
@@ -151,11 +150,16 @@ namespace MazeDemonstration
                     // If instant generation not required.
                     if (!instantCheckBox.Checked)
                     {
-                        break;
+                        mazeSolvingStepTimer.Tag = MazeSolving.DFSInterval(maze, (Point)startPointLabel.Tag, (Point)finishPointLabel.Tag, currBitmap);
                     }
                     // Else instant generation
+                    else
+                    {
+                        mazeSolvingStepTimer.Tag = MazeSolving.DFSNoInterval(maze, (Point)startPointLabel.Tag, (Point)finishPointLabel.Tag, currBitmap);
+                    }
                     break;
             }
+            mazeSolvingStepTimer.Start();
         }
 
         private void timeInterval_Click(object sender, EventArgs e)
