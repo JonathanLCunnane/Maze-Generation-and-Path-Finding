@@ -256,6 +256,7 @@ namespace MazeDemonstration
             // 
             // restartSolving
             // 
+            this.restartSolving.BackColor = System.Drawing.SystemColors.Control;
             this.restartSolving.Enabled = false;
             this.restartSolving.Margin = new System.Windows.Forms.Padding(1);
             this.restartSolving.Name = "restartSolving";

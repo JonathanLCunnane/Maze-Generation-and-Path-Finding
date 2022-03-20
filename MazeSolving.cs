@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
+using static System.Math;
 
 namespace MazeDemonstration
 {
@@ -71,7 +72,226 @@ namespace MazeDemonstration
                 yield return bitmap;
             }
         }
-        
+        private static int manhattanDistance(Point currNode, Point targetNode)
+        {
+            return (Abs(currNode.x - targetNode.x) + Abs(currNode.y - targetNode.y));
+        }
+
+        public static Bitmap AStarNoInterval(Maze maze, Point start, Point finish, Bitmap originalBitmap)
+        {
+            // The weight 'f(x)' here is the sum of weights from the start node 'g(x)' + the manhattan heuristic distance to the end 'h(x)'.
+            // The weight of h(x) is estimated to work best when the h(x)Max : g(x)Max was in a 3 : 1 ratio. g(x)Max = xDim * yDim
+            // Therefore the h(x) weight is when h(x)Max = 3(xDim * yDim). Without a weight, h(x)Max = xDim + yDim, therefore 
+            // h(x) weight will be 3(xDim * yDim / xDim + yDim)
+            int heuristicWeight = 3 * ((maze.dimensions[0] * maze.dimensions[1]) / (maze.dimensions[0] + maze.dimensions[1]));
+
+            // Firstly reset all of the mazes nodes to not being visited
+            maze.unvisitAll();
+            // Create initial variables
+            Dictionary<Point, Point> parent = new Dictionary<Point, Point>();
+            Dictionary<Point, AStarHeuristicValuePair> tentativeDistDict = new Dictionary<Point, AStarHeuristicValuePair>(); // We only have unvisited nodes in this dict, and it will be constantly sorted to decide the next node to search.
+            tentativeDistDict.Add(start, new AStarHeuristicValuePair(0, heuristicWeight * manhattanDistance(start, finish)));
+
+            // Set start to being visited
+            maze.nodes[start.x, start.y].Visited = true;
+            while (tentativeDistDict.Count > 0)
+            {
+                // Set current point after ordering by weight descending and draw onto bitmap if it is not the start or finish
+                tentativeDistDict = tentativeDistDict.OrderBy(kvp => kvp.Value).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+                Point currPoint = tentativeDistDict.Keys.First();
+                int currF = tentativeDistDict[currPoint].f;
+                int currG = tentativeDistDict[currPoint].g;
+                tentativeDistDict.Remove(currPoint);
+
+                if (!currPoint.Equals(start))
+                {
+                    originalBitmap = drawSquare(originalBitmap, currPoint, currPointColour);
+                }
+                if (currPoint.Equals(finish))
+                {
+                    originalBitmap = drawSquare(originalBitmap, currPoint, finishColour);
+                    originalBitmap = notIterativeBacktrace(start, finish, parent, originalBitmap);
+                    return originalBitmap;
+                }
+                // Check if you can go in any direction
+                if (currPoint.y != 0) // North
+                {
+                    if (!maze.nodes[currPoint.x, currPoint.y].North && !maze.nodes[currPoint.x, currPoint.y - 1].Visited) // North
+                    {
+                        // Add next point to the queue and set current as visited
+                        Point newPoint = new Point(currPoint.x, currPoint.y - 1);
+                        tentativeDistDict.Add(newPoint, new AStarHeuristicValuePair(currF + 1, currG + heuristicWeight));
+                        maze.nodes[currPoint.x, currPoint.y].Visited = true;
+
+                        // Record the parent for recursion
+                        parent.Add(newPoint, currPoint);
+
+                        // Draw to be visited square
+                        originalBitmap = drawSquare(originalBitmap, newPoint, nextPointColour);
+                    }
+                }
+                if (currPoint.x != maze.dimensions[0] - 1) // East
+                {
+                    if (!maze.nodes[currPoint.x + 1, currPoint.y].West && !maze.nodes[currPoint.x + 1, currPoint.y].Visited)
+                    {
+                        // Add next point to the queue and set current as visited
+                        Point newPoint = new Point(currPoint.x + 1, currPoint.y);
+                        tentativeDistDict.Add(newPoint, new AStarHeuristicValuePair(currF + 1, currG - heuristicWeight));
+                        maze.nodes[currPoint.x, currPoint.y].Visited = true;
+
+                        // Record the parent for recursion
+                        parent.Add(newPoint, currPoint);
+
+                        // Draw to be visited square
+                        originalBitmap = drawSquare(originalBitmap, newPoint, nextPointColour);
+                    }
+                }
+                if (currPoint.y != maze.dimensions[1] - 1) // South
+                {
+                    if (!maze.nodes[currPoint.x, currPoint.y + 1].North && !maze.nodes[currPoint.x, currPoint.y + 1].Visited)
+                    {
+                        // Add next point to the queue and set current as visited
+                        Point newPoint = new Point(currPoint.x, currPoint.y + 1);
+                        tentativeDistDict.Add(newPoint, new AStarHeuristicValuePair(currF + 1, currG - heuristicWeight));
+                        maze.nodes[currPoint.x, currPoint.y].Visited = true;
+
+                        // Record the parent for recursion
+                        parent.Add(newPoint, currPoint);
+
+                        // Draw to be visited square
+                        originalBitmap = drawSquare(originalBitmap, newPoint, nextPointColour);
+                    }
+                }
+                if (currPoint.x != 0) // West
+                {
+                    if (!maze.nodes[currPoint.x, currPoint.y].West && !maze.nodes[currPoint.x - 1, currPoint.y].Visited)
+                    {
+                        // Add next point to the queue and set current as visited
+                        Point newPoint = new Point(currPoint.x - 1, currPoint.y);
+                        tentativeDistDict.Add(newPoint, new AStarHeuristicValuePair(currF + 1, currG + heuristicWeight));
+                        maze.nodes[currPoint.x, currPoint.y].Visited = true;
+
+                        // Record the parent for recursion
+                        parent.Add(newPoint, currPoint);
+
+                        // Draw to be visited square
+                        originalBitmap = drawSquare(originalBitmap, newPoint, nextPointColour);
+                    }
+                }
+            }
+            return originalBitmap;
+        }
+        public static IEnumerator<Bitmap> AStarInterval(Maze maze, Point start, Point finish, Bitmap originalBitmap)
+        {
+            // The weight 'f(x)' here is the sum of weights from the start node 'g(x)' + the manhattan heuristic distance to the end 'h(x)'.
+            // The weight of h(x) is estimated to work best when the h(x)Max : g(x)Max was in a 3 : 1 ratio. g(x)Max = xDim * yDim
+            // Therefore the h(x) weight is when h(x)Max = 3(xDim * yDim). Without a weight, h(x)Max = xDim + yDim, therefore 
+            // h(x) weight will be 3(xDim * yDim / xDim + yDim)
+            int heuristicWeight = 3 * ((maze.dimensions[0] * maze.dimensions[1]) / (maze.dimensions[0] + maze.dimensions[1]));
+
+            // Firstly reset all of the mazes nodes to not being visited
+            maze.unvisitAll();
+            // Create initial variables
+            Dictionary<Point, Point> parent = new Dictionary<Point, Point>();
+            Dictionary<Point, AStarHeuristicValuePair> tentativeDistDict = new Dictionary<Point, AStarHeuristicValuePair>(); // We only have unvisited nodes in this dict, and it will be constantly sorted to decide the next node to search.
+            tentativeDistDict.Add(start, new AStarHeuristicValuePair(0, heuristicWeight * manhattanDistance(start, finish)));
+
+            // Set start to being visited
+            maze.nodes[start.x, start.y].Visited = true;
+            while (tentativeDistDict.Count > 0)
+            {
+                // Set current point after ordering by weight descending and draw onto bitmap if it is not the start or finish
+                tentativeDistDict = tentativeDistDict.OrderBy(kvp => kvp.Value).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+                Point currPoint = tentativeDistDict.Keys.First();
+                int currF = tentativeDistDict[currPoint].f;
+                int currG = tentativeDistDict[currPoint].g;
+                tentativeDistDict.Remove(currPoint);
+
+                if (!currPoint.Equals(start))
+                {
+                    originalBitmap = drawSquare(originalBitmap, currPoint, currPointColour);
+                }
+                if (currPoint.Equals(finish))
+                {
+                    originalBitmap = drawSquare(originalBitmap, currPoint, finishColour);
+                    foreach (Bitmap step in iterativeBacktrace(start, finish, parent, originalBitmap))
+                    {
+                        yield return step;
+                    }
+                    yield break;
+                }
+                // Check if you can go in any direction
+                if (currPoint.y != 0) // North
+                {
+                    if (!maze.nodes[currPoint.x, currPoint.y].North && !maze.nodes[currPoint.x, currPoint.y - 1].Visited) // North
+                    {
+                        // Add next point to the queue and set current as visited
+                        Point newPoint = new Point(currPoint.x, currPoint.y - 1);
+                        tentativeDistDict.Add(newPoint, new AStarHeuristicValuePair(currF + 1, currG + heuristicWeight));
+                        maze.nodes[currPoint.x, currPoint.y].Visited = true;
+
+                        // Record the parent for recursion
+                        parent.Add(newPoint, currPoint);
+
+                        // Draw to be visited square
+                        originalBitmap = drawSquare(originalBitmap, newPoint, nextPointColour);
+                        yield return originalBitmap;
+                    }
+                }
+                if (currPoint.x != maze.dimensions[0] - 1) // East
+                {
+                    if (!maze.nodes[currPoint.x + 1, currPoint.y].West && !maze.nodes[currPoint.x + 1, currPoint.y].Visited)
+                    {
+                        // Add next point to the queue and set current as visited
+                        Point newPoint = new Point(currPoint.x + 1, currPoint.y);
+                        tentativeDistDict.Add(newPoint, new AStarHeuristicValuePair(currF + 1, currG - heuristicWeight));
+                        maze.nodes[currPoint.x, currPoint.y].Visited = true;
+
+                        // Record the parent for recursion
+                        parent.Add(newPoint, currPoint);
+
+                        // Draw to be visited square
+                        originalBitmap = drawSquare(originalBitmap, newPoint, nextPointColour);
+                        yield return originalBitmap;
+                    }
+                }
+                if (currPoint.y != maze.dimensions[1] - 1) // South
+                {
+                    if (!maze.nodes[currPoint.x, currPoint.y + 1].North && !maze.nodes[currPoint.x, currPoint.y + 1].Visited)
+                    {
+                        // Add next point to the queue and set current as visited
+                        Point newPoint = new Point(currPoint.x, currPoint.y + 1);
+                        tentativeDistDict.Add(newPoint, new AStarHeuristicValuePair(currF + 1, currG - heuristicWeight));
+                        maze.nodes[currPoint.x, currPoint.y].Visited = true;
+
+                        // Record the parent for recursion
+                        parent.Add(newPoint, currPoint);
+
+                        // Draw to be visited square
+                        originalBitmap = drawSquare(originalBitmap, newPoint, nextPointColour);
+                        yield return originalBitmap;
+                    }
+                }
+                if (currPoint.x != 0) // West
+                {
+                    if (!maze.nodes[currPoint.x, currPoint.y].West && !maze.nodes[currPoint.x - 1, currPoint.y].Visited)
+                    {
+                        // Add next point to the queue and set current as visited
+                        Point newPoint = new Point(currPoint.x - 1, currPoint.y);
+                        tentativeDistDict.Add(newPoint, new AStarHeuristicValuePair(currF + 1, currG + heuristicWeight));
+                        maze.nodes[currPoint.x, currPoint.y].Visited = true;
+
+                        // Record the parent for recursion
+                        parent.Add(newPoint, currPoint);
+
+                        // Draw to be visited square
+                        originalBitmap = drawSquare(originalBitmap, newPoint, nextPointColour);
+                        yield return originalBitmap;
+                    }
+                }
+            }
+        }
+
         public static Bitmap BFSNoInterval(Maze maze, Point start, Point finish, Bitmap originalBitmap)
         {
             // Firstly reset all of the mazes nodes to not being visited
@@ -561,15 +781,19 @@ namespace MazeDemonstration
             maze.unvisitAll();
             // Create initial variables
             Dictionary<Point, Point> parent = new Dictionary<Point, Point>();
-            Stack<Point> stack = new Stack<Point>();
-            stack.Push(start);
+            Dictionary<Point, int> tentativeDistDict = new Dictionary<Point, int>(); // We only have unvisited nodes in this dict, and it will be constantly sorted to decide the next node to search.
+            tentativeDistDict.Add(start, 0);
 
             // Set start to being visited
             maze.nodes[start.x, start.y].Visited = true;
-            while (stack.Count > 0)
+            while (tentativeDistDict.Count > 0)
             {
-                // Set current point and draw onto bitmap if it is not the start or finish
-                Point currPoint = stack.Pop();
+                // Set current point after ordering by weight descending and draw onto bitmap if it is not the start or finish
+                tentativeDistDict = (from point in tentativeDistDict orderby point.Value ascending select point).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+                Point currPoint = tentativeDistDict.Keys.First();
+                int currWeight = tentativeDistDict[currPoint];
+                tentativeDistDict.Remove(currPoint);
+
                 if (!currPoint.Equals(start))
                 {
                     originalBitmap = drawSquare(originalBitmap, currPoint, currPointColour);
@@ -590,7 +814,7 @@ namespace MazeDemonstration
                     {
                         // Add next point to the queue and set current as visited
                         Point newPoint = new Point(currPoint.x, currPoint.y - 1);
-                        stack.Push(newPoint);
+                        tentativeDistDict.Add(newPoint, currWeight + 1); 
                         maze.nodes[currPoint.x, currPoint.y].Visited = true;
 
                         // Record the parent for recursion
@@ -607,7 +831,7 @@ namespace MazeDemonstration
                     {
                         // Add next point to the queue and set current as visited
                         Point newPoint = new Point(currPoint.x + 1, currPoint.y);
-                        stack.Push(newPoint);
+                        tentativeDistDict.Add(newPoint, currWeight + 1);
                         maze.nodes[currPoint.x, currPoint.y].Visited = true;
 
                         // Record the parent for recursion
@@ -624,7 +848,7 @@ namespace MazeDemonstration
                     {
                         // Add next point to the queue and set current as visited
                         Point newPoint = new Point(currPoint.x, currPoint.y + 1);
-                        stack.Push(newPoint);
+                        tentativeDistDict.Add(newPoint, currWeight + 1);
                         maze.nodes[currPoint.x, currPoint.y].Visited = true;
 
                         // Record the parent for recursion
@@ -641,7 +865,7 @@ namespace MazeDemonstration
                     {
                         // Add next point to the queue and set current as visited
                         Point newPoint = new Point(currPoint.x - 1, currPoint.y);
-                        stack.Push(newPoint);
+                        tentativeDistDict.Add(newPoint, currWeight + 1);
                         maze.nodes[currPoint.x, currPoint.y].Visited = true;
 
                         // Record the parent for recursion
@@ -654,5 +878,6 @@ namespace MazeDemonstration
                 }
             }
         }
+    
     }
 }

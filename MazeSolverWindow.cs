@@ -132,9 +132,13 @@ namespace MazeDemonstration
                     // If instant generation not required.
                     if (!instantCheckBox.Checked)
                     {
-                        break;
+                        mazeSolvingStepTimer.Tag = MazeSolving.AStarInterval(maze, (Point)startPointLabel.Tag, (Point)finishPointLabel.Tag, currBitmap);
                     }
                     // Else instant generation
+                    else
+                    {
+                        mazeSolvingStepTimer.Tag = MazeSolving.AStarNoInterval(maze, (Point)startPointLabel.Tag, (Point)finishPointLabel.Tag, currBitmap);
+                    }
                     break;
                 case "BFS":
                     // If instant generation not required.
@@ -152,10 +156,13 @@ namespace MazeDemonstration
                     // If instant generation not required.
                     if (!instantCheckBox.Checked)
                     {
-                        break;
+                        mazeSolvingStepTimer.Tag = MazeSolving.DijkstraInterval(maze, (Point)startPointLabel.Tag, (Point)finishPointLabel.Tag, currBitmap);
                     }
                     // Else instant generation
-                    mazeSolvingStepTimer.Tag = MazeSolving.DijkstraNoInterval(maze, (Point)startPointLabel.Tag, (Point)finishPointLabel.Tag, currBitmap);
+                    else
+                    {
+                        mazeSolvingStepTimer.Tag = MazeSolving.DijkstraNoInterval(maze, (Point)startPointLabel.Tag, (Point)finishPointLabel.Tag, currBitmap);
+                    }
                     break;
                 case "DFS":
                     // If instant generation not required.
@@ -252,7 +259,9 @@ namespace MazeDemonstration
 
         private void restartSolving_Click(object sender, EventArgs e)
         {
-            // Firstly dispose of the current bitmap and reset to the original solving bitmap.
+            // Firstly stop the timer, then dispose of the current bitmap and reset to the original solving bitmap.
+            mazeSolvingStepTimer.Stop();
+
             if (mazeSolvingStepTimer.Tag is IEnumerator<Bitmap>)
             {
                 ((IEnumerator<Bitmap>)mazeSolvingStepTimer.Tag).Dispose();
