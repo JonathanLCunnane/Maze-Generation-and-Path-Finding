@@ -16,6 +16,7 @@ namespace MazeDemonstration
     {
         Maze maze { get; set; }
         PictureBox picturebox { get; set; }
+        Bitmap preSolvedBitmap { get; set; }
         Bitmap currBitmap { get; set; }
         Brush bgBrush = new SolidBrush(DefaultBackColor);
         public MazeSolverWindow(Maze _maze, PictureBox _picturebox)
@@ -115,6 +116,15 @@ namespace MazeDemonstration
 
         private void startSolver_Click(object sender, EventArgs e)
         {
+            // Save the original bitmap
+            preSolvedBitmap = new Bitmap(mazePictureBox.Image);
+            // Disable and enable menu buttons
+            setStart.Enabled = false;
+            setFinish.Enabled = false;
+            setPathfindingAlgorithmType.Enabled = false;
+            timeInterval.Enabled = false;
+            startSolver.Enabled = false;
+            restartSolving.Enabled = true;
             // Carry out the correct algorithm based on the algorithm currently selected.
             switch (algorithmTypeLabel.Tag)
             {
@@ -145,6 +155,7 @@ namespace MazeDemonstration
                         break;
                     }
                     // Else instant generation
+                    mazeSolvingStepTimer.Tag = MazeSolving.DijkstraNoInterval(maze, (Point)startPointLabel.Tag, (Point)finishPointLabel.Tag, currBitmap);
                     break;
                 case "DFS":
                     // If instant generation not required.
@@ -237,6 +248,32 @@ namespace MazeDemonstration
                 }
                 mazePictureBox.Image.Save(saveFileDialogue.FileName, format);
             }
+        }
+
+        private void restartSolving_Click(object sender, EventArgs e)
+        {
+            // Firstly dispose of the current bitmap and reset to the original solving bitmap.
+            if (mazeSolvingStepTimer.Tag is IEnumerator<Bitmap>)
+            {
+                ((IEnumerator<Bitmap>)mazeSolvingStepTimer.Tag).Dispose();
+            }
+            else
+            {
+                ((Bitmap)mazeSolvingStepTimer.Tag).Dispose();
+            }
+            mazePictureBox.Image.Dispose();
+            currBitmap = new Bitmap(preSolvedBitmap);
+            mazePictureBox.Image = currBitmap;
+
+            // Disable and enable buttons
+            setStart.Enabled = true;
+            setFinish.Enabled = true;
+            setPathfindingAlgorithmType.Enabled = true;
+            timeInterval.Enabled = true;
+            startSolver.Enabled = true;
+
+            // Disable the reset solving menu button
+            restartSolving.Enabled = false;
         }
     }
 }

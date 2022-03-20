@@ -457,5 +457,202 @@ namespace MazeDemonstration
                 }
             }
         }
+
+        public static Bitmap DijkstraNoInterval(Maze maze, Point start, Point finish, Bitmap originalBitmap)
+        {
+            // Firstly reset all of the mazes nodes to not being visited
+            maze.unvisitAll();
+            // Create initial variables
+            Dictionary<Point, Point> parent = new Dictionary<Point, Point>();
+            Dictionary<Point, int> tentativeDistDict = new Dictionary<Point, int>(); // We only have unvisited nodes in this dict, and it will be constantly sorted to decide the next node to search.
+            tentativeDistDict.Add(start, 0);
+
+            // Set start to being visited
+            maze.nodes[start.x, start.y].Visited = true;
+            while (tentativeDistDict.Count > 0)
+            {
+                // Set current point after ordering by weight descending and draw onto bitmap if it is not the start or finish
+                tentativeDistDict = (from point in tentativeDistDict orderby point.Value ascending select point).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+                Point currPoint = tentativeDistDict.Keys.First();
+                int currWeight = tentativeDistDict[currPoint];
+                tentativeDistDict.Remove(currPoint);
+
+                if (!currPoint.Equals(start))
+                {
+                    originalBitmap = drawSquare(originalBitmap, currPoint, currPointColour);
+                }
+                if (currPoint.Equals(finish))
+                {
+                    originalBitmap = drawSquare(originalBitmap, currPoint, finishColour);
+                    originalBitmap = notIterativeBacktrace(start, finish, parent, originalBitmap);
+                    return originalBitmap;
+                }
+                // Check if you can go in any direction
+                if (currPoint.y != 0) // North
+                {
+                    if (!maze.nodes[currPoint.x, currPoint.y].North && !maze.nodes[currPoint.x, currPoint.y - 1].Visited) // North
+                    {
+                        // Add next point to the queue and set current as visited
+                        Point newPoint = new Point(currPoint.x, currPoint.y - 1);
+                        tentativeDistDict.Add(newPoint, currWeight + 1);
+                        maze.nodes[currPoint.x, currPoint.y].Visited = true;
+
+                        // Record the parent for recursion
+                        parent.Add(newPoint, currPoint);
+
+                        // Draw to be visited square
+                        originalBitmap = drawSquare(originalBitmap, newPoint, nextPointColour);
+                    }
+                }
+                if (currPoint.x != maze.dimensions[0] - 1) // East
+                {
+                    if (!maze.nodes[currPoint.x + 1, currPoint.y].West && !maze.nodes[currPoint.x + 1, currPoint.y].Visited)
+                    {
+                        // Add next point to the queue and set current as visited
+                        Point newPoint = new Point(currPoint.x + 1, currPoint.y);
+                        tentativeDistDict.Add(newPoint, currWeight + 1);
+                        maze.nodes[currPoint.x, currPoint.y].Visited = true;
+
+                        // Record the parent for recursion
+                        parent.Add(newPoint, currPoint);
+
+                        // Draw to be visited square
+                        originalBitmap = drawSquare(originalBitmap, newPoint, nextPointColour);
+                    }
+                }
+                if (currPoint.y != maze.dimensions[1] - 1) // South
+                {
+                    if (!maze.nodes[currPoint.x, currPoint.y + 1].North && !maze.nodes[currPoint.x, currPoint.y + 1].Visited)
+                    {
+                        // Add next point to the queue and set current as visited
+                        Point newPoint = new Point(currPoint.x, currPoint.y + 1);
+                        tentativeDistDict.Add(newPoint, currWeight + 1);
+                        maze.nodes[currPoint.x, currPoint.y].Visited = true;
+
+                        // Record the parent for recursion
+                        parent.Add(newPoint, currPoint);
+
+                        // Draw to be visited square
+                        originalBitmap = drawSquare(originalBitmap, newPoint, nextPointColour);
+                    }
+                }
+                if (currPoint.x != 0) // West
+                {
+                    if (!maze.nodes[currPoint.x, currPoint.y].West && !maze.nodes[currPoint.x - 1, currPoint.y].Visited)
+                    {
+                        // Add next point to the queue and set current as visited
+                        Point newPoint = new Point(currPoint.x - 1, currPoint.y);
+                        tentativeDistDict.Add(newPoint, currWeight + 1);
+                        maze.nodes[currPoint.x, currPoint.y].Visited = true;
+
+                        // Record the parent for recursion
+                        parent.Add(newPoint, currPoint);
+
+                        // Draw to be visited square
+                        originalBitmap = drawSquare(originalBitmap, newPoint, nextPointColour);
+                    }
+                }
+            }
+            return originalBitmap;
+        }
+        public static IEnumerator<Bitmap> DijkstraInterval(Maze maze, Point start, Point finish, Bitmap originalBitmap)
+        {
+            // Firstly reset all of the mazes nodes to not being visited
+            maze.unvisitAll();
+            // Create initial variables
+            Dictionary<Point, Point> parent = new Dictionary<Point, Point>();
+            Stack<Point> stack = new Stack<Point>();
+            stack.Push(start);
+
+            // Set start to being visited
+            maze.nodes[start.x, start.y].Visited = true;
+            while (stack.Count > 0)
+            {
+                // Set current point and draw onto bitmap if it is not the start or finish
+                Point currPoint = stack.Pop();
+                if (!currPoint.Equals(start))
+                {
+                    originalBitmap = drawSquare(originalBitmap, currPoint, currPointColour);
+                }
+                if (currPoint.Equals(finish))
+                {
+                    originalBitmap = drawSquare(originalBitmap, currPoint, finishColour);
+                    foreach (Bitmap step in iterativeBacktrace(start, finish, parent, originalBitmap))
+                    {
+                        yield return step;
+                    }
+                    yield break;
+                }
+                // Check if you can go in any direction
+                if (currPoint.y != 0) // North
+                {
+                    if (!maze.nodes[currPoint.x, currPoint.y].North && !maze.nodes[currPoint.x, currPoint.y - 1].Visited) // North
+                    {
+                        // Add next point to the queue and set current as visited
+                        Point newPoint = new Point(currPoint.x, currPoint.y - 1);
+                        stack.Push(newPoint);
+                        maze.nodes[currPoint.x, currPoint.y].Visited = true;
+
+                        // Record the parent for recursion
+                        parent.Add(newPoint, currPoint);
+
+                        // Draw to be visited square
+                        originalBitmap = drawSquare(originalBitmap, newPoint, nextPointColour);
+                        yield return originalBitmap;
+                    }
+                }
+                if (currPoint.x != maze.dimensions[0] - 1) // East
+                {
+                    if (!maze.nodes[currPoint.x + 1, currPoint.y].West && !maze.nodes[currPoint.x + 1, currPoint.y].Visited)
+                    {
+                        // Add next point to the queue and set current as visited
+                        Point newPoint = new Point(currPoint.x + 1, currPoint.y);
+                        stack.Push(newPoint);
+                        maze.nodes[currPoint.x, currPoint.y].Visited = true;
+
+                        // Record the parent for recursion
+                        parent.Add(newPoint, currPoint);
+
+                        // Draw to be visited square
+                        originalBitmap = drawSquare(originalBitmap, newPoint, nextPointColour);
+                        yield return originalBitmap;
+                    }
+                }
+                if (currPoint.y != maze.dimensions[1] - 1) // South
+                {
+                    if (!maze.nodes[currPoint.x, currPoint.y + 1].North && !maze.nodes[currPoint.x, currPoint.y + 1].Visited)
+                    {
+                        // Add next point to the queue and set current as visited
+                        Point newPoint = new Point(currPoint.x, currPoint.y + 1);
+                        stack.Push(newPoint);
+                        maze.nodes[currPoint.x, currPoint.y].Visited = true;
+
+                        // Record the parent for recursion
+                        parent.Add(newPoint, currPoint);
+
+                        // Draw to be visited square
+                        originalBitmap = drawSquare(originalBitmap, newPoint, nextPointColour);
+                        yield return originalBitmap;
+                    }
+                }
+                if (currPoint.x != 0) // West
+                {
+                    if (!maze.nodes[currPoint.x, currPoint.y].West && !maze.nodes[currPoint.x - 1, currPoint.y].Visited)
+                    {
+                        // Add next point to the queue and set current as visited
+                        Point newPoint = new Point(currPoint.x - 1, currPoint.y);
+                        stack.Push(newPoint);
+                        maze.nodes[currPoint.x, currPoint.y].Visited = true;
+
+                        // Record the parent for recursion
+                        parent.Add(newPoint, currPoint);
+
+                        // Draw to be visited square
+                        originalBitmap = drawSquare(originalBitmap, newPoint, nextPointColour);
+                        yield return originalBitmap;
+                    }
+                }
+            }
+        }
     }
 }
