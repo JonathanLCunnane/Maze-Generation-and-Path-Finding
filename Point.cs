@@ -45,11 +45,10 @@ namespace MazeDemonstration
         }
         public override int GetHashCode()
         {
-            if (this == null)
-            {
-                throw new ArgumentNullException(ToString(), "The Point was `null`.");
-            }
-            return $"{this.x}, {this.y}".GetHashCode();
+            int hash = 7;
+            hash = 5 * hash + x;
+            hash = 5 * hash + y;
+            return hash;
         }
     }
 }
