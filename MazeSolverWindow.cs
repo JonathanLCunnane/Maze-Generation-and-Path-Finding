@@ -59,9 +59,14 @@ namespace MazeDemonstration
             if (startPointDiagResult == DialogResult.OK)
             {
                 Point prev = new Point(((Point)startPointLabel.Tag).x, ((Point)startPointLabel.Tag).y);
+                Point next = new Point(startPointDiag.x, startPointDiag.y);
+                if (MazeSolving.manhattanDistance((Point)finishPointLabel.Tag, next) < 2)
+                {
+                    MessageBox.Show("Manhattan distance between start and finish has to be 2 or greater.", "Error setting start point.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
                 // Change start point label.
                 startPointLabel.Text = $"Start - ({startPointDiag.x}, {startPointDiag.y})";
-                Point next = new Point(startPointDiag.x, startPointDiag.y);
                 startPointLabel.Tag = next;
                 // Set location of start on the maze.
                 mazePictureBox.Image = MazeSolving.changeStartPoint(currBitmap, prev, next, bgBrush);
@@ -77,9 +82,14 @@ namespace MazeDemonstration
             if (finishPointDiagResult == DialogResult.OK)
             {
                 Point prev = new Point(((Point)finishPointLabel.Tag).x, ((Point)finishPointLabel.Tag).y);
+                Point next = new Point(finishPointDiag.x, finishPointDiag.y);
+                if (MazeSolving.manhattanDistance((Point)startPointLabel.Tag, next) < 2)
+                {
+                    MessageBox.Show("Manhattan distance between start and finish has to be 2 or greater.", "Error setting start point.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
                 // Change start point label.
                 finishPointLabel.Text = $"Finish - ({finishPointDiag.x}, {finishPointDiag.y})";
-                Point next = new Point(finishPointDiag.x, finishPointDiag.y);
                 finishPointLabel.Tag = next;
                 // Set location of start on the maze.
                 mazePictureBox.Image = MazeSolving.changeFinishPoint(currBitmap, prev, next, bgBrush);

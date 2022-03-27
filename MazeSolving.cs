@@ -72,7 +72,7 @@ namespace MazeDemonstration
                 yield return bitmap;
             }
         }
-        private static int manhattanDistance(Point currNode, Point targetNode)
+        public static int manhattanDistance(Point currNode, Point targetNode)
         {
             return (Abs(currNode.x - targetNode.x) + Abs(currNode.y - targetNode.y));
         }
